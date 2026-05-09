@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>StampGo — 기획서 시각자료</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --bg: #f5f5f7; --bg2: #ffffff; --bg3: #e5e5e7;
+      --border: #d1d1d6; --text: #1d1d1f; --sub: #86868b;
+      --accent: #0071e3; --green: #34c759; --orange: #ff9f0a; --red: #ff3b30;
+      --purple: #af52de; --teal: #32ade6;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #1d1d1f; --bg2: #2d2d2f; --bg3: #3d3d3f;
+        --border: #424245; --text: #f5f5f7; --sub: #86868b;
+        --accent: #0a84ff;
+      }
+    }
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+    /* NAV */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--bg2); border-bottom: 1px solid var(--border);
+      padding: 0.75rem 2rem; display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;
+    }
+    nav .brand { font-weight: 700; color: var(--accent); font-size: 1rem; margin-right: 1rem; }
+    nav a { font-size: 0.82rem; color: var(--sub); text-decoration: none; padding: 0.3rem 0.6rem; border-radius: 6px; transition: all 0.15s; }
+    nav a:hover { background: var(--bg3); color: var(--text); }
+
+    /* SECTIONS */
+    section { padding: 3rem 2rem; max-width: 1100px; margin: 0 auto; }
+    section + section { border-top: 1px solid var(--border); }
+    .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .section-sub { color: var(--sub); font-size: 0.9rem; margin-bottom: 2rem; }
+
+    /* PHONES */
+    .phones { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .phone {
+      width: 220px; background: #111; border-radius: 36px; padding: 12px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35); flex-shrink: 0;
+    }
+    .phone-label { text-align: center; font-size: 0.75rem; color: var(--sub); margin-top: 0.75rem; font-weight: 500; }
+    .screen {
+      background: var(--bg2); border-radius: 28px; overflow: hidden;
+      aspect-ratio: 9/19.5; display: flex; flex-direction: column;
+      font-size: 0.72rem;
+    }
+    /* status bar */
+    .s-statusbar { background: inherit; padding: 8px 16px 4px; display: flex; justify-content: space-between; font-size: 0.6rem; color: var(--sub); }
+    /* top bar */
+    .s-topbar { padding: 8px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+    .s-topbar-title { font-weight: 700; font-size: 0.85rem; }
+    /* map area */
+    .s-map {
+      flex: 1; position: relative; overflow: hidden;
+      background: linear-gradient(160deg, #c8e6c9 0%, #a5d6a7 40%, #81c784 100%);
+    }
+    .s-map-road-h { position: absolute; height: 6px; background: rgba(255,255,255,0.6); left: 0; right: 0; border-radius: 3px; }
+    .s-map-road-v { position: absolute; width: 6px; background: rgba(255,255,255,0.6); top: 0; bottom: 0; border-radius: 3px; }
+    .s-pin { position: absolute; font-size: 1.2rem; transform: translate(-50%, -100%); }
+    .s-my-loc { position: absolute; width: 14px; height: 14px; background: var(--accent); border: 2px solid white; border-radius: 50%; transform: translate(-50%,-50%); box-shadow: 0 0 0 4px rgba(0,113,227,0.25); }
+    /* badge popup */
+    .s-popup {
+      position: absolute; bottom: 12px; left: 10px; right: 10px;
+      background: var(--bg2); border-radius: 14px;
+      padding: 10px 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .s-popup-badge { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .s-popup-text h4 { font-size: 0.75rem; font-weight: 700; }
+    .s-popup-text p { font-size: 0.62rem; color: var(--sub); }
+    .s-popup-btn { margin-left: auto; background: var(--accent); color: white; border: none; padding: 5px 10px; border-radius: 8px; font-size: 0.62rem; font-weight: 600; }
+    /* bottom nav */
+    .s-bottomnav { background: var(--bg2); border-top: 1px solid var(--border); display: flex; padding: 8px 0 10px; }
+    .s-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 0.55rem; color: var(--sub); cursor: pointer; }
+    .s-tab.active { color: var(--accent); }
+    .s-tab-icon { font-size: 1.05rem; }
+
+    /* --- badge collection screen --- */
+    .s-content { flex: 1; overflow: hidden; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .s-profile-row { display: flex; align-items: center; gap: 8px; padding: 8px 10px; background: var(--bg3); border-radius: 12px; }
+    .s-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--purple)); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.9rem; }
+    .s-profile-info h4 { font-size: 0.72rem; font-weight: 700; }
+    .s-profile-info p { font-size: 0.6rem; color: var(--sub); }
+    .s-xp-bar { height: 4px; background: var(--bg3); border-radius: 2px; overflow: hidden; margin-top: 3px; }
+    .s-xp-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--purple)); border-radius: 2px; }
+    .s-badge-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .s-badge-item { aspect-ratio: 1; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; position: relative; }
+    .s-badge-item.got { background: linear-gradient(135deg, #fff8e1, #ffe082); }
+    .s-badge-item.rare { background: linear-gradient(135deg, #e3f2fd, #90caf9); }
+    .s-badge-item.locked { background: var(--bg3); filter: grayscale(1); opacity: 0.5; }
+    .s-badge-item .s-lock { position: absolute; bottom: 2px; right: 2px; font-size: 0.55rem; }
+
+    /* --- onboarding screen --- */
+    .s-onboard { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 14px; text-align: center; gap: 10px; }
+    .s-onboard-icon { font-size: 2.5rem; }
+    .s-onboard h3 { font-size: 0.9rem; font-weight: 700; }
+    .s-onboard p { font-size: 0.68rem; color: var(--sub); line-height: 1.4; }
+    .s-onboard-btn { background: var(--accent); color: white; border: none; padding: 8px 20px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; width: 100%; }
+    .s-step-dots { display: flex; gap: 5px; }
+    .s-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--bg3); }
+    .s-dot.active { background: var(--accent); width: 18px; border-radius: 3px; }
+
+    /* --- badge acquire screen --- */
+    .s-acquire { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 14px; text-align: center; background: linear-gradient(180deg, #fff8e1 0%, var(--bg2) 60%); gap: 8px; }
+    .s-acquire-badge { font-size: 3.5rem; animation: pop 0.4s ease; }
+    @keyframes pop { 0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
+    .s-acquire h3 { font-size: 0.9rem; font-weight: 700; }
+    .s-acquire p { font-size: 0.65rem; color: var(--sub); }
+    .s-acquire .s-xp-badge { background: var(--orange); color: white; padding: 3px 10px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; }
+    .s-stars { font-size: 0.9rem; letter-spacing: 2px; }
+    .s-share-row { display: flex; gap: 6px; width: 100%; }
+    .s-share-btn { flex: 1; padding: 6px; border-radius: 10px; border: 1px solid var(--border); font-size: 0.6rem; background: var(--bg2); cursor: pointer; }
+    .s-share-btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* FLOW DIAGRAM */
+    .flow { display: flex; align-items: flex-start; gap: 0; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 1rem; }
+    .flow-col { display: flex; flex-direction: column; align-items: center; min-width: 120px; }
+    .flow-node {
+      background: var(--bg2); border: 2px solid var(--border); border-radius: 12px;
+      padding: 0.6rem 0.8rem; text-align: center; font-size: 0.78rem; font-weight: 600;
+      min-width: 100px; max-width: 120px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .flow-node.start { background: var(--accent); color: white; border-color: var(--accent); }
+    .flow-node.end { background: var(--green); color: white; border-color: var(--green); }
+    .flow-node.decision { background: var(--orange); color: white; border-color: var(--orange); border-radius: 50%; width: 90px; height: 90px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; }
+    .flow-node.action { background: #e3f2fd; border-color: var(--accent); color: #0071e3; }
+    .flow-node.reward { background: #fff8e1; border-color: var(--orange); color: #b36200; }
+    .flow-arrow { font-size: 1.2rem; color: var(--sub); margin: 0.3rem 0; }
+    .flow-connector { display: flex; align-items: center; }
+    .flow-line { width: 32px; height: 2px; background: var(--border); }
+    .flow-arrow-h { font-size: 1.2rem; color: var(--sub); }
+    .flow-label { font-size: 0.62rem; color: var(--sub); margin-top: 0.2rem; }
+
+    /* COMPARISON TABLE */
+    .comp-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+    .comp-table th { background: var(--bg3); padding: 0.75rem 1rem; font-size: 0.8rem; font-weight: 700; text-align: left; }
+    .comp-table th:first-child { background: var(--bg3); }
+    .comp-table th.highlight { background: var(--accent); color: white; }
+    .comp-table td { background: var(--bg2); padding: 0.65rem 1rem; font-size: 0.8rem; border-top: 1px solid var(--border); vertical-align: top; }
+    .comp-table td:first-child { font-weight: 600; color: var(--sub); font-size: 0.75rem; }
+    .comp-table td.highlight { background: #e8f4fd; }
+    @media (prefers-color-scheme: dark) { .comp-table td.highlight { background: rgba(10,132,255,0.08); } }
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+    .tag.good { background: #dcfce7; color: #166534; }
+    .tag.bad { background: #fee2e2; color: #991b1b; }
+    .tag.mid { background: #fef3c7; color: #92400e; }
+    @media (prefers-color-scheme: dark) {
+      .tag.good { background: #14532d; color: #86efac; }
+      .tag.bad { background: #7f1d1d; color: #fca5a5; }
+      .tag.mid { background: #78350f; color: #fcd34d; }
+    }
+
+    /* ROADMAP */
+    .roadmap { display: flex; flex-direction: column; gap: 0; }
+    .roadmap-phase { display: flex; gap: 1.5rem; align-items: flex-start; }
+    .roadmap-line { display: flex; flex-direction: column; align-items: center; }
+    .roadmap-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 4px; }
+    .roadmap-dot.phase2 { background: var(--green); }
+    .roadmap-dot.phase3 { background: var(--orange); }
+    .roadmap-dot.phase4 { background: var(--purple); }
+    .roadmap-dot.phase5 { background: var(--red); }
+    .roadmap-vline { width: 2px; flex: 1; background: var(--border); min-height: 30px; margin: 4px 0; }
+    .roadmap-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.25rem; flex: 1; margin-bottom: 1.5rem; }
+    .roadmap-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .roadmap-card .period { font-size: 0.72rem; color: var(--sub); margin-bottom: 0.5rem; }
+    .roadmap-card ul { padding-left: 1.2rem; font-size: 0.82rem; color: var(--sub); }
+    .roadmap-card li { margin-bottom: 0.2rem; }
+
+    /* ARCHITECTURE */
+    .arch { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    @media (max-width: 700px) { .arch { grid-template-columns: 1fr; } }
+    .arch-layer { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+    .arch-layer-title { padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .arch-layer-title.client { background: #e3f2fd; color: #0071e3; }
+    .arch-layer-title.backend { background: #e8f5e9; color: #1b5e20; }
+    .arch-layer-title.infra { background: #fce4ec; color: #880e4f; }
+    @media (prefers-color-scheme: dark) {
+      .arch-layer-title.client { background: rgba(10,132,255,0.15); color: #60b0ff; }
+      .arch-layer-title.backend { background: rgba(52,199,89,0.15); color: #6bd98a; }
+      .arch-layer-title.infra { background: rgba(255,59,48,0.15); color: #ff7b73; }
+    }
+    .arch-items { padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .arch-item { background: var(--bg3); border-radius: 8px; padding: 0.5rem 0.75rem; font-size: 0.8rem; }
+    .arch-item .ai-name { font-weight: 600; }
+    .arch-item .ai-desc { font-size: 0.7rem; color: var(--sub); }
+
+    /* HERO */
+    .hero { background: linear-gradient(135deg, #0071e3 0%, #af52de 100%); color: white; padding: 3rem 2rem; text-align: center; }
+    .hero h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .hero p { opacity: 0.85; font-size: 1rem; }
+    .hero-tags { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+    .hero-tag { background: rgba(255,255,255,0.2); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.8rem; }
+
+    /* LEVEL TABLE */
+    .level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+    .level-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1rem; }
+    .level-card .lc-badge { font-size: 2rem; margin-bottom: 0.5rem; }
+    .level-card h4 { font-size: 0.9rem; font-weight: 700; }
+    .level-card .lc-cond { font-size: 0.75rem; color: var(--sub); margin-top: 0.2rem; }
+    .level-card .lc-xp { font-size: 0.72rem; margin-top: 0.5rem; }
+    .lc-xp-bar { height: 6px; background: var(--bg3); border-radius: 3px; overflow: hidden; margin-top: 4px; }
+    .lc-xp-fill { height: 100%; border-radius: 3px; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="brand">🗺 StampGo 시각자료</span>
+  <a href="#wireframes">📱 앱 화면</a>
+  <a href="#userflow">🔄 사용자 흐름</a>
+  <a href="#architecture">🏗 기술 스택</a>
+  <a href="#badgesystem">🏅 배지 시스템</a>
+  <a href="#roadmap">🚀 로드맵</a>
+  <a href="#comparison">⚖️ 기획서 비교</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>🗺 StampGo</h1>
+  <p>"발걸음이 기록이 되고, 기록이 배지가 된다"</p>
+  <div class="hero-tags">
+    <span class="hero-tag">GPS 인증</span>
+    <span class="hero-tag">게이미피케이션</span>
+    <span class="hero-tag">여행 배지 수집</span>
+    <span class="hero-tag">FlutterFlow + Supabase</span>
+  </div>
+</div>
+
+<!-- ===== 1. WIREFRAMES ===== -->
+<section id="wireframes">
+  <div class="section-title">📱 앱 화면 와이어프레임</div>
+  <div class="section-sub">주요 5개 화면의 UI 구조를 보여줍니다</div>
+
+  <div class="phones">
+
+    <!-- 화면 1: 온보딩 -->
+    <div>
+      <div class="phone">
+        <div class="screen">
+          <div class="s-statusbar"><span>9:41</span><span>●●●</span></div>
+          <div class="s-onboard">
+            <div class="s-step-dots">
+              <div class="s-dot"></div>
+              <div class="s-dot active"></div>
+              <div class="s-dot"></div>
+            </div>
+            <div class="s-onboard-icon">🗺</div>
+            <h3>여행지를 방문하고<br>배지를 모으세요</h3>
+            <p>전국 수백 곳의 명소를<br>직접 방문해 인증하세요.<br>GPS가 자동으로 확인합니다.</p>
+            <button class="s-onboard-btn">시작하기 →</button>
+            <span style="font-size:0.6rem;color:var(--sub)">카카오 / 구글 로그인</span>
+          </div>
+        </div>
+      </div>
+      <div class="phone-label">① 온보딩</div>
+    </div>
+
+    <!-- 화면 2: 홈(지도) -->
+    <div>
+      <div class="phone">
+        <div class="screen">
+          <div class="s-statusbar"><span>9:41</span><span>📍 GPS</span></div>
+          <div class="s-topbar">
+            <span class="s-topbar-title">🗺 탐험 지도</span>
+            <span style="background:var(--green);color:white;padding:2px 8px;border-radius:10px;font-size:0.6rem;font-weight:700">여행 모드 ON</span>
+          </div>
+          <div class="s-map" style="flex:1;position:relative">
+            <div class="s-map-road-h" style="top:35%"></div>
+            <div class="s-map-road-h" style="top:60%"></div>
+            <div class="s-map-road-v" style="left:40%"></div>
+            <div class="s-map-road-v" style="left:70%"></div>
+            <div class="s-pin" style="top:42%;left:42%">🏯</div>
+            <div class="s-pin" style="top:28%;left:72%">⛩️</div>
+            <div class="s-pin" style="top:58%;left:55%">🌊</div>
+            <div class="s-pin" style="top:50%;left:25%">🏔</div>
+            <!-- 미수집: 실루엣 -->
+            <div class="s-pin" style="top:20%;left:48%;opacity:0.35;filter:grayscale(1)">🏛</div>
+            <div class="s-pin" style="top:70%;left:78%;opacity:0.35;filter:grayscale(1)">🌿</div>
+            <div class="s-my-loc" style="top:52%;left:44%"></div>
+            <div class="s-popup">
+              <div class="s-popup-badge" style="background:#fff8e1">🏯</div>
+              <div class="s-popup-text">
+                <h4>경복궁</h4>
+                <p>반경 80m · 일반 배지</p>
+              </div>
+              <button class="s-popup-btn">인증!</button>
+            </div>
+          </div>
+          <div class="s-bottomnav">
+            <div class="s-tab active"><div class="s-tab-icon">🗺</div>지도</div>
+            <div class="s-tab"><div class="s-tab-icon">🏅</div>배지</div>
+            <div class="s-tab"><div class="s-tab-icon">🏆</div>랭킹</div>
+            <div class="s-tab"><div class="s-tab-icon">👤</div>내 정보</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-label">② 홈 (탐험 지도)</div>
+    </div>
+
+    <!-- 화면 3: 배지 획득 -->
+    <div>
+      <div class="phone">
+        <div class="screen">
+          <div class="s-statusbar"><span>9:41</span><span>●●●</span></div>
+          <div class="s-acquire">
+            <div style="font-size:0.72rem;color:var(--sub);font-weight:600">🎉 배지 획득!</div>
+            <div class="s-acquire-badge">🏯</div>
+            <h3>경복궁</h3>
+            <p style="font-size:0.65rem;color:var(--sub)">서울 종로구 · 조선왕조 정궁</p>
+            <div class="s-stars">⭐⭐⭐</div>
+            <div class="s-acquire .s-xp-badge" style="background:var(--orange);color:white;padding:4px 14px;border-radius:20px;font-size:0.72rem;font-weight:700">+50 XP 획득!</div>
+            <div style="width:100%;background:var(--bg3);border-radius:8px;padding:8px 10px;font-size:0.65rem;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Lv 7 · 전국 여행러</span><span style="color:var(--accent)">450/952 XP</span></div>
+              <div class="s-xp-bar"><div class="s-xp-fill" style="width:47%"></div></div>
+            </div>
+            <div class="s-share-row">
+              <button class="s-share-btn">📋 컬렉션</button>
+              <button class="s-share-btn primary">📤 공유</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-label">③ 배지 획득</div>
+    </div>
+
+    <!-- 화면 4: 배지 컬렉션 -->
+    <div>
+      <div class="phone">
+        <div class="screen">
+          <div class="s-statusbar"><span>9:41</span><span>●●●</span></div>
+          <div class="s-topbar">
+            <span class="s-topbar-title">🏅 배지 컬렉션</span>
+            <span style="font-size:0.65rem;color:var(--sub)">12/48</span>
+          </div>
+          <div class="s-content">
+            <div class="s-profile-row">
+              <div class="s-avatar">🧑</div>
+              <div class="s-profile-info" style="flex:1">
+                <h4>여행자_하준 · Lv 7</h4>
+                <p>🏷 전국 여행러</p>
+                <div class="s-xp-bar"><div class="s-xp-fill" style="width:47%"></div></div>
+              </div>
+            </div>
+            <div style="font-size:0.7rem;font-weight:600;color:var(--sub)">📍 서울 (6/12)</div>
+            <div class="s-badge-grid">
+              <div class="s-badge-item got">🏯</div>
+              <div class="s-badge-item got">⛩️</div>
+              <div class="s-badge-item rare">🌉</div>
+              <div class="s-badge-item got">🎡</div>
+              <div class="s-badge-item got">🛤</div>
+              <div class="s-badge-item got">🏟</div>
+              <div class="s-badge-item locked">🏛<span class="s-lock">🔒</span></div>
+              <div class="s-badge-item locked">🌿<span class="s-lock">🔒</span></div>
+            </div>
+            <div style="font-size:0.7rem;font-weight:600;color:var(--sub)">🏔 경기 / 강원 (3/10)</div>
+            <div class="s-badge-grid">
+              <div class="s-badge-item got">🌊</div>
+              <div class="s-badge-item got">🏔</div>
+              <div class="s-badge-item rare">🗻</div>
+              <div class="s-badge-item locked">🌲<span class="s-lock">🔒</span></div>
+            </div>
+          </div>
+          <div class="s-bottomnav">
+            <div class="s-tab"><div class="s-tab-icon">🗺</div>지도</div>
+            <div class="s-tab active"><div class="s-tab-icon">🏅</div>배지</div>
+            <div class="s-tab"><div class="s-tab-icon">🏆</div>랭킹</div>
+            <div class="s-tab"><div class="s-tab-icon">👤</div>내 정보</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-label">④ 배지 컬렉션</div>
+    </div>
+
+    <!-- 화면 5: 랭킹 -->
+    <div>
+      <div class="phone">
+        <div class="screen">
+          <div class="s-statusbar"><span>9:41</span><span>●●●</span></div>
+          <div class="s-topbar">
+            <span class="s-topbar-title">🏆 랭킹</span>
+            <span style="font-size:0.65rem;color:var(--sub)">이번 주</span>
+          </div>
+          <div class="s-content" style="gap:6px">
+            <!-- 탭 -->
+            <div style="display:flex;gap:4px;background:var(--bg3);border-radius:8px;padding:3px">
+              <div style="flex:1;background:var(--bg2);border-radius:6px;text-align:center;padding:4px;font-size:0.65rem;font-weight:700">전체</div>
+              <div style="flex:1;text-align:center;padding:4px;font-size:0.65rem;color:var(--sub)">지역</div>
+              <div style="flex:1;text-align:center;padding:4px;font-size:0.65rem;color:var(--sub)">친구</div>
+            </div>
+            <!-- rank items -->
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border-radius:10px;padding:8px 10px">
+                <span style="font-size:0.9rem">🥇</span>
+                <div style="flex:1">
+                  <div style="font-size:0.72rem;font-weight:700">여행마스터</div>
+                  <div style="font-size:0.6rem;color:var(--sub)">Lv 42 · 배지 137개</div>
+                </div>
+                <span style="font-size:0.65rem;color:var(--orange);font-weight:700">137</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border-radius:10px;padding:8px 10px">
+                <span style="font-size:0.9rem">🥈</span>
+                <div style="flex:1">
+                  <div style="font-size:0.72rem;font-weight:700">전국방랑자</div>
+                  <div style="font-size:0.6rem;color:var(--sub)">Lv 38 · 배지 112개</div>
+                </div>
+                <span style="font-size:0.65rem;color:var(--sub);font-weight:700">112</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border-radius:10px;padding:8px 10px">
+                <span style="font-size:0.9rem">🥉</span>
+                <div style="flex:1">
+                  <div style="font-size:0.72rem;font-weight:700">산악인김씨</div>
+                  <div style="font-size:0.6rem;color:var(--sub)">Lv 29 · 배지 98개</div>
+                </div>
+                <span style="font-size:0.65rem;color:var(--sub);font-weight:700">98</span>
+              </div>
+              <!-- 내 순위 -->
+              <div style="display:flex;align-items:center;gap:8px;background:#e8f4fd;border:2px solid var(--accent);border-radius:10px;padding:8px 10px">
+                <span style="font-size:0.9rem">87위</span>
+                <div style="flex:1">
+                  <div style="font-size:0.72rem;font-weight:700;color:var(--accent)">나 · 여행자_하준</div>
+                  <div style="font-size:0.6rem;color:var(--sub)">Lv 7 · 배지 12개</div>
+                </div>
+                <span style="font-size:0.65rem;color:var(--accent);font-weight:700">12</span>
+              </div>
+            </div>
+          </div>
+          <div class="s-bottomnav">
+            <div class="s-tab"><div class="s-tab-icon">🗺</div>지도</div>
+            <div class="s-tab"><div class="s-tab-icon">🏅</div>배지</div>
+            <div class="s-tab active"><div class="s-tab-icon">🏆</div>랭킹</div>
+            <div class="s-tab"><div class="s-tab-icon">👤</div>내 정보</div>
+          </div>
+        </div>
+      </div>
+      <div class="phone-label">⑤ 랭킹</div>
+    </div>
+
+  </div><!-- /phones -->
+</section>
+
+
+<!-- ===== 2. USER FLOW ===== -->
+<section id="userflow">
+  <div class="section-title">🔄 사용자 흐름 다이어그램</div>
+  <div class="section-sub">앱 실행부터 배지 획득까지의 핵심 플로우</div>
+
+  <!-- 메인 플로우 -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem 2rem;margin-bottom:1.5rem;overflow-x:auto">
+    <div style="font-size:0.8rem;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.2rem">🗺 핵심 여행 플로우</div>
+    <div style="display:flex;align-items:center;gap:0;flex-wrap:nowrap;min-width:max-content">
+      <!-- step 1 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="background:var(--accent);color:white;border-radius:12px;padding:8px 14px;font-size:0.78rem;font-weight:700;text-align:center;min-width:90px">앱 실행<br><span style="font-weight:400;font-size:0.65rem;opacity:.85">로그인 상태</span></div>
+      </div>
+      <div style="display:flex;align-items:center;padding:0 8px"><div style="width:24px;height:2px;background:var(--border)"></div><div style="font-size:0.9rem;color:var(--sub)">▶</div></div>
+
+      <!-- step 2 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="background:var(--bg3);border:2px solid var(--border);border-radius:12px;padding:8px 14px;font-size:0.78rem;font-weight:700;text-align:center;min-width:90px">홈 (지도)<br><span style="font-weight:400;font-size:0.65rem;color:var(--sub)">현재 위치 표시</span></div>
+      </div>
+      <div style="display:flex;align-items:center;padding:0 8px"><div style="width:24px;height:2px;background:var(--border)"></div><div style="font-size:0.9rem;color:var(--sub)">▶</div></div>
+
+      <!-- step 3 decision -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="background:var(--orange);color:white;border-radius:50%;width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;text-align:center">여행<br>모드?</div>
+      </div>
+
+      <!-- yes branch -->
+      <div style="display:flex;flex-direction:column;align-items:flex-start;padding:0 8px;gap:4px">
+        <div style="display:flex;align-items:center;gap:4px">
+          <div style="width:24px;height:2px;background:var(--green)"></div>
+          <div style="font-size:0.9rem;color:var(--green)">▶</div>
+          <div style="font-size:0.62rem;color:var(--green);font-weight:600">ON</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;opacity:0.5;margin-top:20px">
+          <div style="width:24px;height:2px;background:var(--red)"></div>
+          <div style="font-size:0.9rem;color:var(--red)">▶</div>
+          <div style="font-size:0.62rem;color:var(--red);font-weight:600">OFF</div>
+        </div>
+      </div>
+
+      <!-- GPS 활성화 -->
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div style="background:#e8f5e9;border:2px solid var(--green);border-radius:12px;padding:8px 14px;font-size:0.78rem;font-weight:700;text-align:center;min-width:90px;color:#1b5e20">GPS 활성화<br><span style="font-weight:400;font-size:0.65rem;">위치 추적 시작</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0.5">
+          <div style="background:var(--bg3);border-radius:12px;padding:8px 14px;font-size:0.78rem;font-weight:700;text-align:center;min-width:90px;color:var(--sub)">탐색만<br><span style="font-weight:400;font-size:0.65rem;">배지 획득 불가</span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;padding:0 8px"><div style="width:24px;height:2px;background:var(--border)"></div><div style="font-size:0.9rem;color:var(--sub)">▶</div></div>
+
+      <!-- 반경 감지 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="background:var(--bg3);border:2px solid var(--border);border-radius:12px;padding:8px 14px;font-size:0.78rem;font-weight:700;text-align:center;min-width:90px">반경 감지<br><span style="font-weight:400;font-size:0.65rem;color:var(--sub)">50~200m 이내</span></div>
+      </div>
+
+      <div style="display:flex;align-items:center;padding:0 8px"><div style="width:24px;height:2px;background:var(--border)"></div><div style="font-size:0.9rem;color:var(--sub)">▶</div></div>
+
+      <!-- 인증 팝업 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="background:#fff8e1;border:2px solid var(--orange);border-radius:12px;padding:8px 14px;font-size:0.78rem;font-weight:700;text-align:center;min-width:90px;color:#b36200">인증 팝업<br><span style="font-weight:400;font-size:0.65rem;">"인증!" 버튼</span></div>
+      </div>
+
+      <div style="display:flex;align-items:center;padding:0 8px"><div style="width:24px;height:2px;background:var(--border)"></div><div style="font-size:0.9rem;color:var(--sub)">▶</div></div>
+
+      <!-- 배지 획득 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="background:var(--green);color:white;border-radius:12px;padding:8px 14px;font-size:0.78rem;font-weight:700;text-align:center;min-width:90px">🏅 배지 획득!<br><span style="font-weight:400;font-size:0.65rem;opacity:.85">XP + 애니메이션</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 온보딩 플로우 -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:1.5rem 2rem;overflow-x:auto">
+    <div style="font-size:0.8rem;font-weight:700;color:var(--sub);text-transform:uppercase;letter-spacing:.05em;margin-bottom:1.2rem">🚀 신규 사용자 온보딩 플로우</div>
+    <div style="display:flex;align-items:center;gap:0;flex-wrap:nowrap;min-width:max-content">
+      <div style="background:var(--accent);color:white;border-radius:12px;padding:8px 14px;font-size:0.75rem;font-weight:700;text-align:center">앱 설치<br>& 실행</div>
+      <div style="padding:0 8px;display:flex;align-items:center"><div style="width:20px;height:2px;background:var(--border)"></div><span style="color:var(--sub)">▶</span></div>
+
+      <div style="background:var(--bg3);border:2px solid var(--border);border-radius:12px;padding:8px 14px;font-size:0.75rem;font-weight:700;text-align:center">SNS<br>로그인</div>
+      <div style="padding:0 8px;display:flex;align-items:center"><div style="width:20px;height:2px;background:var(--border)"></div><span style="color:var(--sub)">▶</span></div>
+
+      <div style="background:var(--bg3);border:2px solid var(--border);border-radius:12px;padding:8px 14px;font-size:0.75rem;font-weight:700;text-align:center">닉네임<br>설정</div>
+      <div style="padding:0 8px;display:flex;align-items:center"><div style="width:20px;height:2px;background:var(--border)"></div><span style="color:var(--sub)">▶</span></div>
+
+      <div style="background:#e3f2fd;border:2px solid var(--accent);border-radius:12px;padding:8px 14px;font-size:0.75rem;font-weight:700;text-align:center;color:#0071e3">주변 배지<br>미리보기</div>
+      <div style="padding:0 8px;display:flex;align-items:center"><div style="width:20px;height:2px;background:var(--border)"></div><span style="color:var(--sub)">▶</span></div>
+
+      <div style="background:#fff8e1;border:2px solid var(--orange);border-radius:12px;padding:8px 14px;font-size:0.75rem;font-weight:700;text-align:center;color:#b36200">튜토리얼<br>첫 배지</div>
+      <div style="padding:0 8px;display:flex;align-items:center"><div style="width:20px;height:2px;background:var(--border)"></div><span style="color:var(--sub)">▶</span></div>
+
+      <div style="background:var(--green);color:white;border-radius:12px;padding:8px 14px;font-size:0.75rem;font-weight:700;text-align:center">🎉 홈 진입<br>탐험 시작!</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 3. ARCHITECTURE ===== -->
+<section id="architecture">
+  <div class="section-title">🏗 기술 스택 아키텍처</div>
+  <div class="section-sub">MVP 추천 스택: FlutterFlow + Supabase + 카카오맵</div>
+
+  <div class="arch">
+    <div class="arch-layer">
+      <div class="arch-layer-title client">📱 클라이언트 (앱)</div>
+      <div class="arch-items">
+        <div class="arch-item">
+          <div class="ai-name">FlutterFlow</div>
+          <div class="ai-desc">iOS / Android 동시 빌드, 노코드 UI</div>
+        </div>
+        <div class="arch-item">
+          <div class="ai-name">GPS / Location</div>
+          <div class="ai-desc">네이티브 위치 권한 · 반경 감지 로직</div>
+        </div>
+        <div class="arch-item">
+          <div class="ai-name">카카오맵 SDK</div>
+          <div class="ai-desc">국내 지도 표시 · POI 마커 렌더링</div>
+        </div>
+        <div class="arch-item">
+          <div class="ai-name">Push Notification</div>
+          <div class="ai-desc">근처 배지 알림 (FCM)</div>
+        </div>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-title backend">🖥 백엔드 / DB</div>
+      <div class="arch-items">
+        <div class="arch-item">
+          <div class="ai-name">Supabase (PostgreSQL)</div>
+          <div class="ai-desc">users, badges, locations, user_badges</div>
+        </div>
+        <div class="arch-item">
+          <div class="ai-name">Supabase Auth</div>
+          <div class="ai-desc">카카오 · 구글 소셜 로그인</div>
+        </div>
+        <div class="arch-item">
+          <div class="ai-name">Supabase Edge Functions</div>
+          <div class="ai-desc">배지 획득 검증 · XP 계산 로직</div>
+        </div>
+        <div class="arch-item">
+          <div class="ai-name">Supabase Storage</div>
+          <div class="ai-desc">배지 이미지 · 프로필 사진</div>
+        </div>
+      </div>
+    </div>
+    <div class="arch-layer">
+      <div class="arch-layer-title infra">⚙️ 관리 / 인프라</div>
+      <div class="arch-items">
+        <div class="arch-item">
+          <div class="ai-name">Lovable / Retool</div>
+          <div class="ai-desc">관리자 대시보드 (배지·장소 관리)</div>
+        </div>
+        <div class="arch-item">
+          <div class="ai-name">카카오맵 API</div>
+          <div class="ai-desc">월 300만 건 무료 · 국내 최적화</div>
+        </div>
+        <div class="arch-item">
+          <div class="ai-name">FCM (Firebase)</div>
+          <div class="ai-desc">푸시 알림 발송</div>
+        </div>
+        <div class="arch-item">
+          <div class="ai-name">확장 시: 구글맵</div>
+          <div class="ai-desc">해외 배지 확장 시 전환 또는 병행</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DB Schema 시각화 -->
+  <div style="margin-top:2rem;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.5rem">
+    <div style="font-size:0.85rem;font-weight:700;margin-bottom:1rem">🗄 핵심 DB 스키마 관계</div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;align-items:flex-start">
+      <div style="background:var(--bg3);border-radius:10px;padding:0.75rem 1rem;min-width:130px">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--accent);margin-bottom:0.4rem">users</div>
+        <div style="font-size:0.68rem;color:var(--sub);line-height:1.8">id<br>nickname<br>level / xp<br>title (칭호)<br>created_at</div>
+      </div>
+      <div style="display:flex;align-items:center;font-size:1rem;color:var(--sub)">↔</div>
+      <div style="background:var(--bg3);border-radius:10px;padding:0.75rem 1rem;min-width:130px">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--green);margin-bottom:0.4rem">user_badges</div>
+        <div style="font-size:0.68rem;color:var(--sub);line-height:1.8">user_id (FK)<br>badge_id (FK)<br>obtained_at<br>lat / lng</div>
+      </div>
+      <div style="display:flex;align-items:center;font-size:1rem;color:var(--sub)">↔</div>
+      <div style="background:var(--bg3);border-radius:10px;padding:0.75rem 1rem;min-width:130px">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--orange);margin-bottom:0.4rem">badges</div>
+        <div style="font-size:0.68rem;color:var(--sub);line-height:1.8">id<br>location_id (FK)<br>grade (등급)<br>xp_reward<br>is_premium</div>
+      </div>
+      <div style="display:flex;align-items:center;font-size:1rem;color:var(--sub)">↔</div>
+      <div style="background:var(--bg3);border-radius:10px;padding:0.75rem 1rem;min-width:130px">
+        <div style="font-size:0.75rem;font-weight:700;color:var(--purple);margin-bottom:0.4rem">locations</div>
+        <div style="font-size:0.68rem;color:var(--sub);line-height:1.8">id<br>name<br>lat / lng<br>radius (m)<br>category</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 4. BADGE SYSTEM ===== -->
+<section id="badgesystem">
+  <div class="section-title">🏅 배지 & 레벨 시스템</div>
+  <div class="section-sub">배지 등급별 특성과 주요 칭호 조건</div>
+
+  <!-- 배지 등급 -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2rem">
+    <div style="background:linear-gradient(135deg,#fff8e1,#ffe082);border-radius:14px;padding:1.25rem;border:2px solid #ffd54f">
+      <div style="font-size:1.8rem;margin-bottom:0.4rem">⭐</div>
+      <div style="font-weight:700;font-size:0.9rem">일반 (Common)</div>
+      <div style="font-size:0.75rem;color:#5d4037;margin-top:0.4rem">누구나 방문 시 획득<br>+50 XP</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#e3f2fd,#90caf9);border-radius:14px;padding:1.25rem;border:2px solid #64b5f6">
+      <div style="font-size:1.8rem;margin-bottom:0.4rem">💎</div>
+      <div style="font-weight:700;font-size:0.9rem">희귀 (Rare)</div>
+      <div style="font-size:0.75rem;color:#0d47a1;margin-top:0.4rem">첫 100명 방문 · 저명도 장소<br>+150 XP</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#fce4ec,#f48fb1);border-radius:14px;padding:1.25rem;border:2px solid #f06292">
+      <div style="font-size:1.8rem;margin-bottom:0.4rem">🌟</div>
+      <div style="font-weight:700;font-size:0.9rem">특별 (Special)</div>
+      <div style="font-size:0.75rem;color:#880e4f;margin-top:0.4rem">시즌 · 이벤트 한정<br>+200~400 XP</div>
+    </div>
+    <div style="background:linear-gradient(135deg,#ede7f6,#b39ddb);border-radius:14px;padding:1.25rem;border:2px solid #9575cd">
+      <div style="font-size:1.8rem;margin-bottom:0.4rem">👑</div>
+      <div style="font-weight:700;font-size:0.9rem">프리미어 (Premier)</div>
+      <div style="font-size:0.75rem;color:#4a148c;margin-top:0.4rem">구독자 전용 고급 디자인<br>+500 XP</div>
+    </div>
+  </div>
+
+  <!-- 칭호 -->
+  <div style="font-size:0.9rem;font-weight:700;margin-bottom:0.75rem">🏷 주요 칭호 시스템</div>
+  <div class="level-grid">
+    <div class="level-card"><div class="lc-badge">🧭</div><h4>동네 탐험가</h4><div class="lc-cond">배지 5개 달성</div><div class="lc-xp">250 XP ~<div class="lc-xp-bar"><div class="lc-xp-fill" style="width:5%;background:var(--green)"></div></div></div></div>
+    <div class="level-card"><div class="lc-badge">🚂</div><h4>국내 여행러</h4><div class="lc-cond">3개 광역시·도 배지 보유</div><div class="lc-xp">조건 달성 시 즉시 부여<div class="lc-xp-bar"><div class="lc-xp-fill" style="width:20%;background:var(--accent)"></div></div></div></div>
+    <div class="level-card"><div class="lc-badge">🗺</div><h4>지도 마니아</h4><div class="lc-cond">배지 30개 달성</div><div class="lc-xp">1,500 XP ~<div class="lc-xp-bar"><div class="lc-xp-fill" style="width:40%;background:var(--orange)"></div></div></div></div>
+    <div class="level-card"><div class="lc-badge">🏔</div><h4>산악인</h4><div class="lc-cond">국립공원 배지 10개 이상</div><div class="lc-xp">조건 달성 시 즉시 부여<div class="lc-xp-bar"><div class="lc-xp-fill" style="width:55%;background:var(--green)"></div></div></div></div>
+    <div class="level-card"><div class="lc-badge">🏙</div><h4>도시 헌터</h4><div class="lc-cond">5대 광역시 배지 완전 수집</div><div class="lc-xp">조건 달성 시 즉시 부여<div class="lc-xp-bar"><div class="lc-xp-fill" style="width:65%;background:var(--purple)"></div></div></div></div>
+    <div class="level-card"><div class="lc-badge">👑</div><h4>전설의 여행자</h4><div class="lc-cond">Lv 99 + 배지 200개 이상</div><div class="lc-xp">최고 등급 칭호<div class="lc-xp-bar"><div class="lc-xp-fill" style="width:100%;background:linear-gradient(90deg,var(--accent),var(--purple))"></div></div></div></div>
+  </div>
+</section>
+
+
+<!-- ===== 5. ROADMAP ===== -->
+<section id="roadmap">
+  <div class="section-title">🚀 수익 모델 로드맵</div>
+  <div class="section-sub">단계별 성장 전략 및 수익화 계획</div>
+
+  <div class="roadmap">
+    <div class="roadmap-phase">
+      <div class="roadmap-line"><div class="roadmap-dot"></div><div class="roadmap-vline"></div></div>
+      <div class="roadmap-card">
+        <h4>Phase 1 — 사용자 기반 확보</h4>
+        <div class="period">0~6개월 · 목표: MAU 10,000명</div>
+        <ul><li>무료 서비스 운영 (일반 배지 전체 무료)</li><li>국내 명소 50→100곳 데이터 구축</li><li>배지 수집 데이터 축적 · 앱 안정화</li></ul>
+      </div>
+    </div>
+    <div class="roadmap-phase">
+      <div class="roadmap-line"><div class="roadmap-dot phase2"></div><div class="roadmap-vline"></div></div>
+      <div class="roadmap-card">
+        <h4>Phase 2 — 구독 모델 도입</h4>
+        <div class="period">6~12개월 · 목표: 구독 전환율 5%</div>
+        <ul><li>프리미엄 구독 월 2,900원 / 연 24,900원</li><li>프리미어 배지 · 광고 제거 · 고급 통계</li><li>시즌 한정 배지 · 칭호 시스템 강화</li></ul>
+      </div>
+    </div>
+    <div class="roadmap-phase">
+      <div class="roadmap-line"><div class="roadmap-dot phase3"></div><div class="roadmap-vline"></div></div>
+      <div class="roadmap-card">
+        <h4>Phase 3 — 굿즈 & B2B 협업</h4>
+        <div class="period">12~24개월 · 목표: MRR 500만 원</div>
+        <ul><li>한정판 실물 굿즈 (스티커, 엽서, 키링)</li><li>지역 관광청 협업 공식 배지 코스</li><li>디지털 배지 컬렉션 앱 내 유료 판매</li></ul>
+      </div>
+    </div>
+    <div class="roadmap-phase">
+      <div class="roadmap-line"><div class="roadmap-dot phase4"></div><div class="roadmap-vline"></div></div>
+      <div class="roadmap-card">
+        <h4>Phase 4 — 여행 콘텐츠 플랫폼</h4>
+        <div class="period">24개월~ · 글로벌 진출 준비</div>
+        <ul><li>외국인 인바운드 다국어 지원 (영/일/중)</li><li>숙소·식당 예약 연결 커미션 수익</li><li>여행 크리에이터 콘텐츠 연동</li></ul>
+      </div>
+    </div>
+    <div class="roadmap-phase">
+      <div class="roadmap-line"><div class="roadmap-dot phase5"></div></div>
+      <div class="roadmap-card">
+        <h4>Phase 5 — 여행테크 앱 전환</h4>
+        <div class="period">장기 · 글로벌 여행 플랫폼</div>
+        <ul><li>해외 배지 확장 (일본 → 동남아 → 유럽)</li><li>여행 데이터 기반 광고·인사이트 서비스</li><li>글로벌 여행자 커뮤니티</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== 6. COMPARISON ===== -->
+<section id="comparison">
+  <div class="section-title">⚖️ 기획서 구성 비교</div>
+  <div class="section-sub">기존 기획서 vs 수업 발표용 강화 기획서 — 무엇을 보완할까?</div>
+
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>항목</th>
+        <th>기존 기획서</th>
+        <th class="highlight">✨ 강화 방향 (제안)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>문제 정의</td>
+        <td>서비스 배경 나열 수준</td>
+        <td class="highlight"><span class="tag good">강화</span> 페인포인트 구체화 + 시장 규모(TAM/SAM) 수치 추가</td>
+      </tr>
+      <tr>
+        <td>경쟁사 분석</td>
+        <td>❌ 없음</td>
+        <td class="highlight"><span class="tag good">추가</span> 포켓몬GO, 스탬프투어 앱, 네이버지도 등 직·간접 경쟁 분석</td>
+      </tr>
+      <tr>
+        <td>차별화 포인트</td>
+        <td>핵심 가치 제안 간략히 서술</td>
+        <td class="highlight"><span class="tag good">강화</span> 포지셔닝 맵 + "왜 우리인가?" 명시</td>
+      </tr>
+      <tr>
+        <td>MVP 기능</td>
+        <td>우선순위 P0~P2 표 ✅</td>
+        <td class="highlight"><span class="tag mid">유지</span> 개발 일정(타임라인) Gantt 차트 추가 권장</td>
+      </tr>
+      <tr>
+        <td>사용자 여정</td>
+        <td>텍스트 플로우 서술</td>
+        <td class="highlight"><span class="tag good">강화</span> 이 문서의 시각 다이어그램으로 대체</td>
+      </tr>
+      <tr>
+        <td>수익 모델</td>
+        <td>5단계 로드맵 ✅</td>
+        <td class="highlight"><span class="tag mid">유지</span> 단위경제(유닛 이코노믹스) LTV/CAC 추정 추가</td>
+      </tr>
+      <tr>
+        <td>팀 / 실행 계획</td>
+        <td>❌ 없음</td>
+        <td class="highlight"><span class="tag good">추가</span> 팀 구성, 역할 분담, 개발 마일스톤</td>
+      </tr>
+      <tr>
+        <td>리스크</td>
+        <td>6개 리스크 표 ✅</td>
+        <td class="highlight"><span class="tag mid">유지</span> 충분함 — 우선순위 정도 추가</td>
+      </tr>
+      <tr>
+        <td>기술 스택</td>
+        <td>비교표 + 추천 조합 ✅</td>
+        <td class="highlight"><span class="tag mid">유지</span> 이 문서의 아키텍처 다이어그램으로 보완</td>
+      </tr>
+      <tr>
+        <td>KPI / 지표</td>
+        <td>부록으로 간략히</td>
+        <td class="highlight"><span class="tag good">강화</span> 본문으로 이동 + North Star Metric 설정</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:1.25rem">
+    <div style="font-size:0.85rem;font-weight:700;margin-bottom:0.75rem">💡 벤처 스타트업 수업 발표용 — 꼭 추가할 3가지</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem">
+      <div style="background:var(--bg3);border-radius:10px;padding:1rem">
+        <div style="font-size:1.2rem;margin-bottom:0.4rem">1️⃣</div>
+        <div style="font-weight:700;font-size:0.85rem">경쟁사 분석 & 포지셔닝</div>
+        <div style="font-size:0.75rem;color:var(--sub);margin-top:0.25rem">"왜 우리 앱이 이길 수 있는가?"를 데이터로 보여줘야 투자자 설득 가능</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:10px;padding:1rem">
+        <div style="font-size:1.2rem;margin-bottom:0.4rem">2️⃣</div>
+        <div style="font-weight:700;font-size:0.85rem">단위 경제 & 재무 모델</div>
+        <div style="font-size:0.75rem;color:var(--sub);margin-top:0.25rem">CAC, LTV, 손익분기점 예상치 — 수치가 있어야 사업성이 보임</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:10px;padding:1rem">
+        <div style="font-size:1.2rem;margin-bottom:0.4rem">3️⃣</div>
+        <div style="font-weight:700;font-size:0.85rem">팀 & 실행 로드맵</div>
+        <div style="font-size:0.75rem;color:var(--sub);margin-top:0.25rem">누가 만들 것인가 + 언제까지 MVP를 낼 수 있는가를 명시해야 신뢰도 상승</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div style="text-align:center;padding:2rem;color:var(--sub);font-size:0.78rem;border-top:1px solid var(--border)">
+  StampGo 기획서 시각자료 · 2026-05-09 · 벤처 스타트업 수업과제
+</div>
+
+</body>
+</html>

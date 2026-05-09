@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"require\\('docx'\\); console.log\\('docx OK'\\)\")",
+      "Bash(npm install *)",
+      "Bash(python3 -c \"import docx; print\\('python-docx OK'\\)\")",
+      "Bash(pip3 install *)",
+      "PowerShell(node --version)",
+      "Bash(python3 -m pip install python-docx)",
+      "Bash(python3 -c \"import docx; print\\('python-docx ready'\\)\")",
+      "Read(//c/Users/송 하 준/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/40bdb874-26fd-4a02-912c-01be2c10331b/7cab0c02-3121-4c80-8acd-ce05d11b5d78/skills/docx/scripts/office/**)",
+      "PowerShell(python3 \"C:\\\\Users\\\\�� �� ��\\\\AppData\\\\Roaming\\\\Claude\\\\local-agent-mode-sessions\\\\skills-plugin\\\\40bdb874-26fd-4a02-912c-01be2c10331b\\\\7cab0c02-3121-4c80-8acd-ce05d11b5d78\\\\skills\\\\docx\\\\scripts\\\\office\\\\soffice.py\" --headless --convert-to pdf \"C:\\\\Users\\\\�� �� ��\\\\Documents\\\\������п�\\\\��������\\\\��ó ��ŸƮ��\\\\��ȹ��\\\\GPS_���������_��ȹ��.docx\" --outdir \"C:\\\\Users\\\\�� �� ��\\\\Documents\\\\������п�\\\\��������\\\\��ó ��ŸƮ��\\\\��ȹ��\" 2>&1)",
+      "Bash(ls \"C:\\\\Users\\\\송 하 준\\\\Documents\\\\알토대학원\\\\수업과제\\\\벤처 스타트업\\\\기획서\\\\\")"
+    ]
+  }
+}
