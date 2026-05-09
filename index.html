@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StampGo — 발걸음이 배지가 된다</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #0071e3; --blue-dark: #0051a8; --blue-light: #e8f4fd;
+      --green: #34c759; --orange: #ff9f0a; --purple: #af52de; --red: #ff3b30;
+      --gray-100: #f5f5f7; --gray-200: #e5e5e7; --gray-300: #d1d1d6;
+      --gray-500: #86868b; --gray-900: #1d1d1f;
+      --radius: 16px; --shadow: 0 8px 32px rgba(0,0,0,0.10);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--gray-900); background: #fff; overflow-x: hidden; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%; height: 60px;
+      background: rgba(255,255,255,0.88); backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+    .nav-logo { font-size: 1.25rem; font-weight: 800; color: var(--blue); display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { font-size: 0.875rem; color: var(--gray-500); text-decoration: none; transition: color .15s; }
+    .nav-links a:hover { color: var(--gray-900); }
+    .nav-cta { background: var(--blue); color: white; padding: 0.45rem 1.1rem; border-radius: 20px; font-size: 0.875rem; font-weight: 600; text-decoration: none; transition: background .15s; }
+    .nav-cta:hover { background: var(--blue-dark); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      padding: 100px 5% 80px;
+      background: linear-gradient(160deg, #f0f7ff 0%, #f5f5f7 50%, #fff8f0 100%);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,113,227,0.08) 0%, transparent 70%);
+      top: -100px; right: -100px; pointer-events: none;
+    }
+    .hero-inner { display: flex; align-items: center; gap: 6%; max-width: 1100px; width: 100%; }
+    .hero-text { flex: 1; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--blue-light); color: var(--blue); padding: 0.35rem 0.9rem; border-radius: 20px; font-size: 0.78rem; font-weight: 600; margin-bottom: 1.5rem; }
+    .hero-title { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; line-height: 1.15; margin-bottom: 1.25rem; letter-spacing: -0.02em; }
+    .hero-title span { color: var(--blue); }
+    .hero-desc { font-size: 1.05rem; color: var(--gray-500); line-height: 1.7; margin-bottom: 2rem; max-width: 480px; }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary { background: var(--blue); color: white; padding: 0.85rem 2rem; border-radius: 30px; font-size: 1rem; font-weight: 700; text-decoration: none; transition: all .15s; box-shadow: 0 4px 14px rgba(0,113,227,0.35); display: inline-flex; align-items: center; gap: 0.5rem; }
+    .btn-primary:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--gray-900); padding: 0.85rem 2rem; border-radius: 30px; font-size: 1rem; font-weight: 600; text-decoration: none; border: 2px solid var(--gray-300); transition: all .15s; }
+    .btn-outline:hover { border-color: var(--gray-900); }
+    .hero-stats { display: flex; gap: 2rem; margin-top: 2.5rem; flex-wrap: wrap; }
+    .hero-stat { }
+    .hero-stat strong { display: block; font-size: 1.6rem; font-weight: 800; color: var(--blue); }
+    .hero-stat span { font-size: 0.8rem; color: var(--gray-500); }
+
+    /* Phone mockup */
+    .hero-phones { flex: 0 0 auto; display: flex; gap: -10px; align-items: flex-end; }
+    .phone-wrap { position: relative; }
+    .phone-wrap.main { z-index: 2; }
+    .phone-wrap.side { opacity: 0.7; transform: scale(0.88) translateX(-20px); z-index: 1; }
+    .mock-phone {
+      width: 220px; background: #0f0f0f; border-radius: 38px; padding: 10px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.28), 0 0 0 1px rgba(255,255,255,0.06);
+    }
+    .mock-screen { background: #fff; border-radius: 30px; overflow: hidden; aspect-ratio: 9/19.5; display: flex; flex-direction: column; font-size: 0.7rem; }
+    .ms-notch { background: #0f0f0f; height: 24px; display: flex; align-items: center; justify-content: center; border-radius: 0 0 14px 14px; width: 80px; margin: 0 auto; }
+    .ms-statusbar { padding: 4px 14px; display: flex; justify-content: space-between; font-size: 0.58rem; color: #666; }
+    .ms-topbar { padding: 6px 14px; display: flex; align-items: center; justify-content: space-between; }
+    .ms-title { font-size: 0.82rem; font-weight: 800; }
+    .ms-map { flex: 1; position: relative; background: linear-gradient(160deg, #c8e6c9, #81c784); overflow: hidden; }
+    .ms-road-h { position: absolute; height: 5px; background: rgba(255,255,255,0.55); left: 0; right: 0; border-radius: 3px; }
+    .ms-road-v { position: absolute; width: 5px; background: rgba(255,255,255,0.55); top: 0; bottom: 0; border-radius: 3px; }
+    .ms-pin { position: absolute; font-size: 1.1rem; transform: translate(-50%, -100%); filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
+    .ms-myloc { position: absolute; width: 13px; height: 13px; background: var(--blue); border: 2.5px solid white; border-radius: 50%; transform: translate(-50%,-50%); box-shadow: 0 0 0 5px rgba(0,113,227,0.22); }
+    .ms-popup { position: absolute; bottom: 10px; left: 10px; right: 10px; background: white; border-radius: 14px; padding: 9px 11px; box-shadow: 0 4px 16px rgba(0,0,0,0.16); display: flex; align-items: center; gap: 8px; }
+    .ms-popup-icon { width: 34px; height: 34px; border-radius: 10px; background: #fff8e1; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+    .ms-popup-info h5 { font-size: 0.72rem; font-weight: 700; }
+    .ms-popup-info p { font-size: 0.6rem; color: #888; }
+    .ms-popup-btn { margin-left: auto; background: var(--blue); color: white; border: none; padding: 5px 10px; border-radius: 8px; font-size: 0.6rem; font-weight: 700; cursor: pointer; flex-shrink: 0; }
+    .ms-bottomnav { background: white; border-top: 1px solid #eee; display: flex; padding: 7px 0 9px; }
+    .ms-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 0.52rem; color: #aaa; }
+    .ms-tab.active { color: var(--blue); }
+    .ms-tab-icon { font-size: 0.95rem; }
+
+    /* ── FEATURES ── */
+    .features { padding: 100px 5%; background: white; }
+    .section-header { text-align: center; max-width: 640px; margin: 0 auto 4rem; }
+    .section-eyebrow { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--blue); margin-bottom: 0.75rem; }
+    .section-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 1rem; }
+    .section-desc { font-size: 1rem; color: var(--gray-500); line-height: 1.7; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+    .feature-card { background: var(--gray-100); border-radius: var(--radius); padding: 2rem; transition: transform .2s, box-shadow .2s; }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .feature-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+    .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .feature-card p { font-size: 0.875rem; color: var(--gray-500); line-height: 1.6; }
+
+    /* ── HOW IT WORKS ── */
+    .how { padding: 100px 5%; background: var(--gray-100); }
+    .steps { display: flex; gap: 0; max-width: 900px; margin: 0 auto; position: relative; flex-wrap: wrap; justify-content: center; }
+    .steps::before { content: ''; position: absolute; top: 32px; left: calc(12% + 32px); right: calc(12% + 32px); height: 2px; background: linear-gradient(90deg, var(--blue), var(--purple)); border-radius: 2px; }
+    .step { flex: 1; min-width: 140px; max-width: 180px; display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 0.5rem; position: relative; z-index: 1; }
+    .step-num { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--blue), var(--purple)); color: white; font-size: 1.4rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; box-shadow: 0 4px 16px rgba(0,113,227,0.3); flex-shrink: 0; }
+    .step h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .step p { font-size: 0.78rem; color: var(--gray-500); line-height: 1.5; }
+
+    /* ── BADGE SHOWCASE ── */
+    .badges { padding: 100px 5%; background: white; }
+    .badge-tabs { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 3rem; flex-wrap: wrap; }
+    .badge-tab { padding: 0.5rem 1.25rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: 2px solid var(--gray-300); color: var(--gray-500); cursor: pointer; transition: all .15s; background: white; }
+    .badge-tab.active { background: var(--blue); color: white; border-color: var(--blue); }
+    .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 1rem; max-width: 900px; margin: 0 auto; }
+    .badge-item { background: var(--gray-100); border-radius: 14px; padding: 1.25rem 0.75rem; text-align: center; transition: transform .2s, box-shadow .2s; cursor: pointer; border: 2px solid transparent; }
+    .badge-item:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--gray-300); }
+    .badge-item.rare { background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
+    .badge-item.special { background: linear-gradient(135deg, #fce4ec, #f8bbd0); }
+    .badge-item.premier { background: linear-gradient(135deg, #ede7f6, #d1c4e9); }
+    .badge-item.locked { opacity: 0.4; filter: grayscale(0.8); }
+    .badge-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+    .badge-name { font-size: 0.72rem; font-weight: 600; color: var(--gray-900); }
+    .badge-type { font-size: 0.62rem; color: var(--gray-500); margin-top: 0.2rem; }
+    .badge-grade { display: inline-block; font-size: 0.6rem; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-top: 0.35rem; }
+    .grade-common { background: #fff8e1; color: #b36200; }
+    .grade-rare { background: #e3f2fd; color: #0d47a1; }
+    .grade-special { background: #fce4ec; color: #880e4f; }
+    .grade-premier { background: #ede7f6; color: #4a148c; }
+
+    /* ── GAMIFICATION ── */
+    .gamification { padding: 100px 5%; background: linear-gradient(135deg, #0d1b40 0%, #1a237e 50%, #311b92 100%); color: white; }
+    .gamification .section-eyebrow { color: #90caf9; }
+    .gamification .section-title { color: white; }
+    .gamification .section-desc { color: rgba(255,255,255,0.65); }
+    .level-showcase { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; max-width: 900px; margin: 0 auto; }
+    .level-card { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius); padding: 1.5rem; backdrop-filter: blur(10px); }
+    .level-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+    .level-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .level-cond { font-size: 0.75rem; color: rgba(255,255,255,0.55); margin-bottom: 0.75rem; }
+    .xp-bar-wrap { background: rgba(255,255,255,0.12); border-radius: 4px; height: 6px; overflow: hidden; }
+    .xp-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #4fc3f7, #e040fb); }
+
+    /* ── ROADMAP ── */
+    .roadmap { padding: 100px 5%; background: var(--gray-100); }
+    .roadmap-timeline { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; }
+    .rt-item { display: flex; gap: 1.5rem; align-items: flex-start; }
+    .rt-line { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .rt-dot { width: 16px; height: 16px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+    .rt-dot.p1 { background: var(--blue); }
+    .rt-dot.p2 { background: var(--green); }
+    .rt-dot.p3 { background: var(--orange); }
+    .rt-dot.p4 { background: var(--purple); }
+    .rt-dot.p5 { background: var(--red); }
+    .rt-vline { width: 2px; flex: 1; min-height: 24px; margin: 4px 0; }
+    .rt-vline.p1 { background: linear-gradient(var(--blue), var(--green)); }
+    .rt-vline.p2 { background: linear-gradient(var(--green), var(--orange)); }
+    .rt-vline.p3 { background: linear-gradient(var(--orange), var(--purple)); }
+    .rt-vline.p4 { background: linear-gradient(var(--purple), var(--red)); }
+    .rt-card { background: white; border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem; flex: 1; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .rt-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .rt-card .period { font-size: 0.75rem; color: var(--gray-500); margin-bottom: 0.75rem; }
+    .rt-card ul { padding-left: 1.2rem; display: flex; flex-direction: column; gap: 0.2rem; }
+    .rt-card li { font-size: 0.85rem; color: var(--gray-500); }
+
+    /* ── CTA ── */
+    .cta-section {
+      padding: 120px 5%; text-align: center;
+      background: linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+      color: white;
+    }
+    .cta-section h2 { font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800; margin-bottom: 1rem; }
+    .cta-section p { font-size: 1.05rem; opacity: 0.8; margin-bottom: 2.5rem; }
+    .cta-store-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .store-btn { background: rgba(255,255,255,0.15); border: 2px solid rgba(255,255,255,0.3); color: white; padding: 0.9rem 2rem; border-radius: 14px; font-size: 0.9rem; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 0.6rem; transition: background .15s; backdrop-filter: blur(8px); }
+    .store-btn:hover { background: rgba(255,255,255,0.25); }
+    .store-btn .store-icon { font-size: 1.4rem; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--gray-900); color: var(--gray-500); padding: 3rem 5%; }
+    .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem; }
+    .footer-brand h3 { color: white; font-size: 1rem; font-weight: 800; margin-bottom: 0.5rem; }
+    .footer-brand p { font-size: 0.8rem; line-height: 1.6; max-width: 260px; }
+    .footer-links h4 { color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .footer-links ul { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .footer-links a { color: var(--gray-500); font-size: 0.82rem; text-decoration: none; }
+    .footer-links a:hover { color: white; }
+    .footer-bottom { margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid #333; text-align: center; font-size: 0.78rem; color: #555; }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .fade-up { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 800px) {
+      .hero-inner { flex-direction: column; text-align: center; }
+      .hero-btns, .hero-stats { justify-content: center; }
+      .hero-phones { margin-top: 2rem; }
+      .phone-wrap.side { display: none; }
+      .steps::before { display: none; }
+      nav .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>🗺</span> StampGo</a>
+  <ul class="nav-links">
+    <li><a href="#features">기능</a></li>
+    <li><a href="#how">사용 방법</a></li>
+    <li><a href="#badges">배지</a></li>
+    <li><a href="#roadmap">로드맵</a></li>
+  </ul>
+  <a class="nav-cta" href="#cta">베타 신청</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">🚀 2026년 출시 예정 · MVP 개발 중</div>
+      <h1 class="hero-title">
+        발걸음이 기록이 되고,<br>
+        기록이 <span>배지</span>가 된다.
+      </h1>
+      <p class="hero-desc">
+        GPS 기반으로 여행지를 방문하면 자동으로 인증 배지를 획득하는 게이미피케이션 여행 앱. 전국 명소를 직접 밟고, 수집하고, 랭킹에 도전하세요.
+      </p>
+      <div class="hero-btns">
+        <a href="#cta" class="btn-primary">📲 베타 신청하기</a>
+        <a href="#how" class="btn-outline">어떻게 작동하나요?</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><strong>500+</strong><span>출시 목표 명소</span></div>
+        <div class="hero-stat"><strong>4가지</strong><span>배지 등급</span></div>
+        <div class="hero-stat"><strong>무료</strong><span>기본 사용</span></div>
+      </div>
+    </div>
+
+    <!-- Phone Mockups -->
+    <div class="hero-phones">
+      <div class="phone-wrap main">
+        <div class="mock-phone">
+          <div class="mock-screen">
+            <div class="ms-notch"></div>
+            <div class="ms-statusbar"><span>9:41</span><span>📍 GPS</span></div>
+            <div class="ms-topbar">
+              <span class="ms-title">🗺 탐험 지도</span>
+              <span style="background:#34c759;color:white;padding:2px 8px;border-radius:8px;font-size:0.58rem;font-weight:700">여행 모드 ON</span>
+            </div>
+            <div class="ms-map">
+              <div class="ms-road-h" style="top:33%"></div>
+              <div class="ms-road-h" style="top:62%"></div>
+              <div class="ms-road-v" style="left:38%"></div>
+              <div class="ms-road-v" style="left:68%"></div>
+              <div class="ms-pin" style="top:40%;left:40%">🏯</div>
+              <div class="ms-pin" style="top:25%;left:70%">⛩️</div>
+              <div class="ms-pin" style="top:60%;left:55%">🌊</div>
+              <div class="ms-pin" style="top:48%;left:22%">🏔</div>
+              <div class="ms-pin" style="top:18%;left:48%;opacity:.3;filter:grayscale(1)">🏛</div>
+              <div class="ms-pin" style="top:72%;left:76%;opacity:.3;filter:grayscale(1)">🌿</div>
+              <div class="ms-myloc" style="top:50%;left:42%"></div>
+              <div class="ms-popup">
+                <div class="ms-popup-icon">🏯</div>
+                <div class="ms-popup-info">
+                  <h5>경복궁 근처!</h5>
+                  <p>반경 80m · 일반 배지 +50XP</p>
+                </div>
+                <button class="ms-popup-btn">인증!</button>
+              </div>
+            </div>
+            <div class="ms-bottomnav">
+              <div class="ms-tab active"><div class="ms-tab-icon">🗺</div>지도</div>
+              <div class="ms-tab"><div class="ms-tab-icon">🏅</div>배지</div>
+              <div class="ms-tab"><div class="ms-tab-icon">🏆</div>랭킹</div>
+              <div class="ms-tab"><div class="ms-tab-icon">👤</div>나</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">핵심 기능</div>
+    <h2 class="section-title">여행을 게임처럼, 기록을 컬렉션처럼</h2>
+    <p class="section-desc">StampGo는 단순한 여행 앱이 아닙니다. 방문한 모든 곳이 나만의 컬렉션이 됩니다.</p>
+  </div>
+  <div class="features-grid">
+    <div class="feature-card fade-up">
+      <div class="feature-icon">📍</div>
+      <h3>GPS 자동 인증</h3>
+      <p>여행 모드를 켜면 반경 50~200m 이내 여행지를 자동 감지합니다. 앱을 열고 방문하기만 하면 끝.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">🏅</div>
+      <h3>배지 수집</h3>
+      <p>일반·희귀·특별·프리미어 4가지 등급의 배지를 모으세요. 미수집 배지는 실루엣으로 표시돼 수집 욕구를 자극합니다.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">🏆</div>
+      <h3>랭킹 & 레벨</h3>
+      <p>배지를 모을수록 XP가 쌓이고 레벨이 오릅니다. 전국 순위와 지역 순위에서 다른 여행자들과 경쟁하세요.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">🧭</div>
+      <h3>맥락 기반 추천</h3>
+      <p>근처 미수집 배지, 연계 지역 배지, 희귀도 기반 배지를 추천해 다음 여행지를 자연스럽게 유도합니다.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">🎖</div>
+      <h3>칭호 시스템</h3>
+      <p>"동네 탐험가"부터 "전설의 여행자"까지. 특정 조건을 달성해야만 얻는 칭호로 차별화된 성취감을 느끼세요.</p>
+    </div>
+    <div class="feature-card fade-up">
+      <div class="feature-icon">📤</div>
+      <h3>SNS 공유</h3>
+      <p>희귀 배지를 획득했을 때 한 번의 탭으로 공유. 내 여행 컬렉션을 자랑스럽게 보여주세요.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">사용 방법</div>
+    <h2 class="section-title">3단계면 충분합니다</h2>
+  </div>
+  <div class="steps fade-up">
+    <div class="step">
+      <div class="step-num">📲</div>
+      <h4>앱 설치 & 가입</h4>
+      <p>카카오 또는 구글 계정으로 30초 안에 시작</p>
+    </div>
+    <div class="step">
+      <div class="step-num">🗺</div>
+      <h4>여행 모드 ON</h4>
+      <p>여행을 떠날 때 여행 모드를 켜세요. GPS가 자동으로 작동합니다</p>
+    </div>
+    <div class="step">
+      <div class="step-num">🏅</div>
+      <h4>방문 & 배지 획득</h4>
+      <p>명소 반경에 들어서면 인증 팝업이 뜹니다. "인증!" 버튼만 누르면 끝</p>
+    </div>
+    <div class="step">
+      <div class="step-num">🎖</div>
+      <h4>모으고 랭킹 도전</h4>
+      <p>배지가 쌓일수록 레벨과 칭호가 업그레이드. 전국 1위를 노려보세요</p>
+    </div>
+  </div>
+</section>
+
+<!-- BADGE SHOWCASE -->
+<section class="badges" id="badges">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">배지 컬렉션</div>
+    <h2 class="section-title">전국 수백 개의 배지를 모으세요</h2>
+    <p class="section-desc">출시 시 50~100개, 이후 지속 업데이트. 등급별로 다른 희소성과 XP를 제공합니다.</p>
+  </div>
+  <div class="badge-tabs fade-up">
+    <button class="badge-tab active" onclick="filterBadge(this,'all')">전체</button>
+    <button class="badge-tab" onclick="filterBadge(this,'common')">⭐ 일반</button>
+    <button class="badge-tab" onclick="filterBadge(this,'rare')">💎 희귀</button>
+    <button class="badge-tab" onclick="filterBadge(this,'special')">🌟 특별</button>
+    <button class="badge-tab" onclick="filterBadge(this,'premier')">👑 프리미어</button>
+  </div>
+  <div class="badge-grid fade-up" id="badge-grid">
+    <!-- 일반 -->
+    <div class="badge-item" data-grade="common"><div class="badge-emoji">🏯</div><div class="badge-name">경복궁</div><div class="badge-type">서울 · 역사</div><div class="badge-grade grade-common">일반 +50XP</div></div>
+    <div class="badge-item" data-grade="common"><div class="badge-emoji">🗼</div><div class="badge-name">N서울타워</div><div class="badge-type">서울 · 랜드마크</div><div class="badge-grade grade-common">일반 +50XP</div></div>
+    <div class="badge-item" data-grade="common"><div class="badge-emoji">🌊</div><div class="badge-name">해운대</div><div class="badge-type">부산 · 해변</div><div class="badge-grade grade-common">일반 +50XP</div></div>
+    <div class="badge-item" data-grade="common"><div class="badge-emoji">⛩️</div><div class="badge-name">불국사</div><div class="badge-type">경주 · 유적</div><div class="badge-grade grade-common">일반 +50XP</div></div>
+    <div class="badge-item" data-grade="common"><div class="badge-emoji">🌺</div><div class="badge-name">한라산</div><div class="badge-type">제주 · 자연</div><div class="badge-grade grade-common">일반 +50XP</div></div>
+    <div class="badge-item" data-grade="common"><div class="badge-emoji">🎡</div><div class="badge-name">에버랜드</div><div class="badge-type">경기 · 테마파크</div><div class="badge-grade grade-common">일반 +50XP</div></div>
+    <!-- 희귀 -->
+    <div class="badge-item rare" data-grade="rare"><div class="badge-emoji">🌉</div><div class="badge-name">광안대교</div><div class="badge-type">부산 · 야경</div><div class="badge-grade grade-rare">희귀 +150XP</div></div>
+    <div class="badge-item rare" data-grade="rare"><div class="badge-emoji">🗻</div><div class="badge-name">설악산 대청봉</div><div class="badge-type">강원 · 등산</div><div class="badge-grade grade-rare">희귀 +150XP</div></div>
+    <div class="badge-item rare" data-grade="rare"><div class="badge-emoji">🏝</div><div class="badge-name">우도</div><div class="badge-type">제주 · 섬</div><div class="badge-grade grade-rare">희귀 +150XP</div></div>
+    <!-- 특별 -->
+    <div class="badge-item special" data-grade="special"><div class="badge-emoji">🎆</div><div class="badge-name">서울 불꽃축제</div><div class="badge-type">시즌 · 이벤트</div><div class="badge-grade grade-special">특별 +300XP</div></div>
+    <div class="badge-item special" data-grade="special"><div class="badge-emoji">🌸</div><div class="badge-name">벚꽃 시즌</div><div class="badge-type">봄 한정 · 이벤트</div><div class="badge-grade grade-special">특별 +250XP</div></div>
+    <!-- 프리미어 -->
+    <div class="badge-item premier" data-grade="premier"><div class="badge-emoji">👑</div><div class="badge-name">경복궁 프리미어</div><div class="badge-type">구독자 전용</div><div class="badge-grade grade-premier">프리미어 +500XP</div></div>
+    <div class="badge-item locked" data-grade="premier"><div class="badge-emoji">🔒</div><div class="badge-name">잠금</div><div class="badge-type">구독하면 해금</div><div class="badge-grade grade-premier">프리미어</div></div>
+  </div>
+</section>
+
+<!-- GAMIFICATION -->
+<section class="gamification" id="gamification">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">레벨 & 칭호</div>
+    <h2 class="section-title">당신만의 여행 정체성</h2>
+    <p class="section-desc">레벨업과 칭호 달성으로 성취감을 극대화하세요. 칭호는 프로필에 하나만 장착 가능 — 희소성이 가치를 만듭니다.</p>
+  </div>
+  <div class="level-showcase fade-up">
+    <div class="level-card">
+      <div class="level-icon">🧭</div>
+      <h4>동네 탐험가</h4>
+      <div class="level-cond">배지 5개 달성</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:8%"></div></div>
+    </div>
+    <div class="level-card">
+      <div class="level-icon">🚂</div>
+      <h4>국내 여행러</h4>
+      <div class="level-cond">3개 광역시·도 배지 보유</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:25%"></div></div>
+    </div>
+    <div class="level-card">
+      <div class="level-icon">🗺</div>
+      <h4>지도 마니아</h4>
+      <div class="level-cond">배지 30개 달성</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:45%"></div></div>
+    </div>
+    <div class="level-card">
+      <div class="level-icon">🏔</div>
+      <h4>전국 방랑자</h4>
+      <div class="level-cond">모든 광역시·도 배지 보유</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:68%"></div></div>
+    </div>
+    <div class="level-card">
+      <div class="level-icon">👑</div>
+      <h4>전설의 여행자</h4>
+      <div class="level-cond">Lv 99 + 배지 200개 이상</div>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" style="width:100%"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section class="roadmap" id="roadmap">
+  <div class="section-header fade-up">
+    <div class="section-eyebrow">로드맵</div>
+    <h2 class="section-title">단계별 성장 전략</h2>
+  </div>
+  <div class="roadmap-timeline fade-up">
+    <div class="rt-item">
+      <div class="rt-line"><div class="rt-dot p1"></div><div class="rt-vline p1"></div></div>
+      <div class="rt-card"><h4>Phase 1 — 사용자 기반 확보</h4><div class="period">0~6개월 · 목표 MAU 10,000명</div><ul><li>무료 서비스 · 국내 명소 100곳 데이터 구축</li><li>FlutterFlow + Supabase MVP 개발</li><li>베타 테스트 → TestFlight 배포</li></ul></div>
+    </div>
+    <div class="rt-item">
+      <div class="rt-line"><div class="rt-dot p2"></div><div class="rt-vline p2"></div></div>
+      <div class="rt-card"><h4>Phase 2 — 구독 모델 도입</h4><div class="period">6~12개월 · 구독 전환율 5%</div><ul><li>프리미엄 구독 월 2,900원 / 연 24,900원</li><li>프리미어 배지 · 광고 제거 · 고급 통계</li><li>시즌 한정 배지 · 칭호 시스템 강화</li></ul></div>
+    </div>
+    <div class="rt-item">
+      <div class="rt-line"><div class="rt-dot p3"></div><div class="rt-vline p3"></div></div>
+      <div class="rt-card"><h4>Phase 3 — 굿즈 & B2B 협업</h4><div class="period">12~24개월 · MRR 500만 원</div><ul><li>한정판 실물 굿즈 (스티커, 엽서, 키링)</li><li>지역 관광청 협업 공식 배지 코스</li></ul></div>
+    </div>
+    <div class="rt-item">
+      <div class="rt-line"><div class="rt-dot p4"></div><div class="rt-vline p4"></div></div>
+      <div class="rt-card"><h4>Phase 4 — 글로벌 확장</h4><div class="period">24개월~ · 외국인 인바운드</div><ul><li>영어·일본어·중국어 다국어 지원</li><li>한국 관광공사 공식 파트너 배지</li></ul></div>
+    </div>
+    <div class="rt-item">
+      <div class="rt-line"><div class="rt-dot p5"></div></div>
+      <div class="rt-card"><h4>Phase 5 — 여행테크 플랫폼</h4><div class="period">장기 · 글로벌 여행 커뮤니티</div><ul><li>해외 배지 확장 (일본 → 동남아 → 유럽)</li><li>여행 데이터 기반 광고 인사이트 서비스</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="cta">
+  <h2>지금 베타 신청하고<br>첫 배지를 받으세요</h2>
+  <p>베타 참여자에게는 <strong>선구자</strong> 한정 칭호와 프리미어 배지가 무료로 제공됩니다.</p>
+  <div class="cta-store-btns">
+    <a href="#" class="store-btn"><span class="store-icon">🍎</span><div><div style="font-size:.7rem;opacity:.7">곧 출시 예정</div>App Store</div></a>
+    <a href="#" class="store-btn"><span class="store-icon">🤖</span><div><div style="font-size:.7rem;opacity:.7">곧 출시 예정</div>Google Play</div></a>
+    <a href="#" class="store-btn" style="background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5)"><span class="store-icon">📧</span><div><div style="font-size:.7rem;opacity:.7">베타 알림 받기</div>이메일 신청</div></a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>🗺 StampGo</h3>
+      <p>발걸음이 기록이 되고, 기록이 배지가 된다.<br>GPS 기반 게이미피케이션 여행 앱.</p>
+    </div>
+    <div class="footer-links">
+      <h4>서비스</h4>
+      <ul>
+        <li><a href="#">기능 소개</a></li>
+        <li><a href="#">배지 목록</a></li>
+        <li><a href="#">구독 플랜</a></li>
+        <li><a href="#">로드맵</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>회사</h4>
+      <ul>
+        <li><a href="#">팀 소개</a></li>
+        <li><a href="#">블로그</a></li>
+        <li><a href="#">채용</a></li>
+        <li><a href="#">문의</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>법적 고지</h4>
+      <ul>
+        <li><a href="#">개인정보처리방침</a></li>
+        <li><a href="#">서비스 이용약관</a></li>
+        <li><a href="#">위치정보 이용약관</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 StampGo. All rights reserved. · 벤처 스타트업 수업 과제용 Mock Site</div>
+</footer>
+
+<script>
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Badge filter
+  function filterBadge(btn, grade) {
+    document.querySelectorAll('.badge-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.badge-item').forEach(item => {
+      item.style.display = (grade === 'all' || item.dataset.grade === grade) ? '' : 'none';
+    });
+  }
+</script>
+</body>
+</html>
