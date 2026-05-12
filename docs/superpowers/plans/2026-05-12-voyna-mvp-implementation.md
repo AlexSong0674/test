@@ -1,25 +1,67 @@
-# Voyna iOS MVP Implementation Plan
+# Voyna iOS MVP Implementation Plan (v2.0 — 12주 단축)
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** GPS 기반 여행 배지 앱 'Voyna'의 iOS MVP를 24주 안에 App Store 정식 출시한다 — 서울 50곳 명소, 50종 배지, 자동/확인형 획득 이원화, 카카오 로그인, 카카오맵 표시, 레벨/칭호 시스템 포함.
+**Goal:** GPS 기반 여행 배지 앱 'Voyna'의 iOS MVP를 **12주 안에** App Store 정식 출시한다 — 서울 30곳 명소 (50곳 → MVP 축소), 30종 배지, 자동/확인형 획득 이원화, 카카오 로그인, 카카오맵 표시, 레벨/칭호 시스템 포함.
 
-**Architecture:** FlutterFlow(iOS/Android 동시 빌드) + Supabase(PostgreSQL + Auth + Edge Functions + Storage) + 카카오맵 SDK + FCM(푸시) 조합. 노코드 UI + 필요한 부분만 Dart 커스텀 코드, 모든 비즈니스 로직(배지 획득 검증·XP 계산·칭호 자동 부여)은 Supabase Edge Functions에서 처리해 클라이언트 어뷰징 방지.
+**Architecture:** FlutterFlow(클라우드 빌드 — Mac 불필요) + Supabase(PostgreSQL + Auth + Edge Functions + Storage) + 카카오맵 SDK + 무료 AI 배지 디자인. 노코드 UI + 필요한 부분만 Dart 커스텀 코드, 모든 비즈니스 로직은 Supabase Edge Functions에서 처리해 클라이언트 어뷰징 방지.
 
-**Tech Stack:** FlutterFlow, Dart 3.x, Supabase(PostgreSQL 15, GoTrue, Storage, Edge Functions/Deno), 카카오맵 API(JS+SDK), kakao_flutter_sdk(인증), google_sign_in, geolocator, firebase_messaging, AdMob(Phase 1.5+)
+**Tech Stack:** FlutterFlow Pro($30/월, 클라우드 빌드), Dart 3.x, Supabase(PostgreSQL 15, GoTrue, Storage, Edge Functions/Deno), 카카오맵 API(JS+WebView), kakao_flutter_sdk(인증), google_sign_in, geolocator, **무료 AI 디자인**(Microsoft Designer + Ideogram + Bing Image Creator + Canva)
 
 ---
 
-## 진행 마일스톤 요약
+## v2.0 변경사항 (2026-05-12)
 
-| 마일스톤 | 시점 | 단계 | 핵심 산출물 |
-|---------|------|------|------------|
-| M1: 기획 완료 | 0주 | Phase 0 | 계정·도메인·API 키 모두 발급됨 |
-| M2: 백엔드 가동 | 6주 | Phase 1 | Supabase 동작, 50곳 시드 입력 |
-| M3: 앱 동작 (알파) | 12주 | Phase 2~4 | 로그인·맵·배지 획득 동작 |
-| M4: 내부 테스트 | 18주 | Phase 5~7 | 팀 내부 10명 베타 |
-| M5: 베타 출시 | 22주 | Phase 8~9 | TestFlight 100명 (선구자 칭호) |
-| M6: 정식 출시 | 24주 | Phase 10 | App Store 출시 |
+| 항목 | v1.0 | v2.0 |
+|------|------|------|
+| 목표 기간 | 24주 | **12주** |
+| 명소 수 | 50곳 | **30곳** (서울 핵심 명소 우선) |
+| 배지 디자인 | AI + Canva (유료 50~150만) | **무료 AI 도구만** (Microsoft Designer 등) |
+| Mac | 필요 (시뮬레이터) | **불필요** (FlutterFlow 클라우드 빌드 + 실기기 TestFlight) |
+| 베타 규모 | 100명 | 50명 (모집 빨리 진행) |
+| Phase 5 (푸시/공유/랭킹) | MVP 포함 | **V1.1로 연기** |
+| Phase 9 (법적 검토) | MVP 포함 | **출시 후 검토** (개인정보 처리방침 골격만 게시) |
+| Phase 11 (광고/구독) | M7+ 포함 | **별도 plan** |
+| 실행 방법 | 양자택일 | **Subagent-Driven 확정** (인간 가이드 하이브리드) |
+
+## MVP 축소 항목 (V1.1+로 연기)
+
+- ❌ FCM 푸시 알림
+- ❌ SNS 친구·팔로우 + 랭킹
+- ❌ 맥락 기반 배지 추천 (단순 거리순만 유지)
+- ❌ 이벤트·미션 시스템
+- ❌ AdMob 광고
+- ❌ Voyna+ 구독
+- ✅ 유지: 카카오/구글 로그인, 4탭 UI, GPS, 자동/확인형 배지 획득, 레벨/칭호, 컬렉션
+
+## 30곳 우선 명소 (50곳 중 선별 기준)
+
+특별(3) + 희귀(9) 전체 유지 + 일반에서 18곳 선별:
+- **특별 3곳**: 경복궁, N서울타워, 청와대, 북한산
+- **희귀 9곳**: 창덕궁, 덕수궁, 종묘, 북촌, 롯데월드타워, 반포 한강, 인왕산, 청계산, 국립중앙박물관, 리움, 노들섬
+- **일반 18곳** (관광객 인지도 + 분포 균형):
+  창경궁, 광화문, 숭례문, 인사동, 북촌 한옥마을, 명동, 홍대 거리, 가로수길, 강남역, 이태원, 여의도 한강공원, 잠실 한강공원, 남산공원, 서울숲, 광장시장, DDP, 코엑스 별마당, MMCA
+
+
+
+---
+
+## 12주 마일스톤 (v2.0)
+
+| 주차 | Phase | 핵심 산출물 | 담당 |
+|-----|-------|------------|------|
+| **W1** | Phase 0 + 1 시작 | 계정·키 발급 + DB 스키마 SQL | 사용자 가이드 + Claude |
+| **W2** | Phase 1 완료 | Edge Functions 4종 + 30곳 시드 + 백엔드 회귀 테스트 통과 | Claude (코드) + 사용자 (배포) |
+| **W3** | Phase 2 | 카카오·구글 로그인 동작 | Claude (코드) + 사용자 (FlutterFlow 작업) |
+| **W4-5** | Phase 3 | 4탭 UI 완성 (홈/맵/배지/더보기) | Claude (Custom Widget/Action) + 사용자 (FlutterFlow UI) |
+| **W6-7** | Phase 4 | GPS + 자동/확인형 배지 획득 동작 | Claude (로직) + 사용자 (테스트) |
+| **W8** | Phase 6 | 무료 AI로 30종 배지 생성 + Storage 업로드 | 사용자 (AI 도구) + Claude (프롬프트·업로드 스크립트) |
+| **W9** | Phase 7 | TestFlight 내부 빌드 + 서울 5개 명소 현장 테스트 | 사용자 (현장) + Claude (버그픽스) |
+| **W10** | Phase 8 | TestFlight 외부 베타 50명 모집 + 피드백 1주차 | 사용자 (모집) + Claude (피드백 반영 코드) |
+| **W11** | Phase 10 | App Store 메타데이터 + 스크린샷 + 심사 제출 | 사용자 (제출) + Claude (메타데이터 작성) |
+| **W12** | Phase 10 완료 | 심사 통과 → 정식 출시 + 출시 마케팅 | 사용자 (출시·마케팅) |
+
+**관리 마진:** Apple 심사 리젝 또는 베타 피드백 대응으로 +1~2주 지연 가능성. 이 경우 V1.1 기능 일부를 출시 후로 자연스럽게 미루는 전략.
 
 ---
 
