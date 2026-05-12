@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voyna — 서울 초기 명소 50곳 DB</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #0071e3; --blue-dark: #0051a8; --blue-light: #e8f4fd;
+      --gray-100: #f5f5f7; --gray-200: #e5e5e7; --gray-300: #d1d1d6;
+      --gray-500: #86868b; --gray-900: #1d1d1f;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif; color: var(--gray-900); background: #fff; line-height: 1.7; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--gray-200); padding: 12px 5%; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-size: 1.1rem; font-weight: 800; color: var(--blue); text-decoration: none; }
+    .nav-links { display: flex; gap: 1.25rem; }
+    .nav-links a { font-size: 0.85rem; color: var(--gray-500); text-decoration: none; }
+    .nav-links a:hover { color: var(--gray-900); }
+    .nav-links a.active { color: var(--blue); font-weight: 600; }
+
+    .hero { padding: 48px 5% 32px; background: linear-gradient(160deg, #f0f7ff 0%, #f5f5f7 100%); border-bottom: 1px solid var(--gray-200); }
+    .hero-inner { max-width: 960px; margin: 0 auto; }
+    .hero h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .hero h1 .num { color: var(--blue); }
+    .hero p { color: var(--gray-500); font-size: 1rem; }
+    .hero .meta { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+    .chip { background: white; border: 1px solid var(--gray-300); padding: 4px 12px; border-radius: 16px; font-size: 0.78rem; color: var(--gray-500); }
+    .chip strong { color: var(--blue); font-weight: 700; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 5% 80px; }
+
+    h2 { font-size: 1.4rem; font-weight: 800; margin: 2.5rem 0 0.75rem; padding-top: 1rem; border-top: 2px solid var(--blue); color: var(--gray-900); }
+    h2:first-of-type { margin-top: 0.5rem; padding-top: 0; border-top: none; }
+    h3 { font-size: 1.1rem; font-weight: 700; margin: 1.5rem 0 0.5rem; color: var(--blue-dark); }
+    p { margin: 0.5rem 0; }
+
+    table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 1rem 0; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); font-size: 0.9rem; }
+    th { background: var(--blue); color: white; padding: 10px 14px; text-align: left; font-weight: 700; font-size: 0.85rem; }
+    td { padding: 9px 14px; border-top: 1px solid var(--gray-200); vertical-align: top; background: white; }
+    tr:nth-child(even) td { background: var(--blue-light); }
+
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .stat-card { background: linear-gradient(135deg, #f0f7ff, #fff); border: 1px solid var(--gray-200); border-radius: 14px; padding: 1.25rem; text-align: center; }
+    .stat-card .num { font-size: 2rem; font-weight: 800; color: var(--blue); display: block; }
+    .stat-card .label { font-size: 0.78rem; color: var(--gray-500); margin-top: 0.25rem; }
+
+    .filters { display: flex; gap: 0.5rem; margin: 1.5rem 0 1rem; flex-wrap: wrap; }
+    .filter-btn { padding: 6px 14px; border-radius: 18px; border: 2px solid var(--gray-300); background: white; color: var(--gray-500); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+    .filter-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+
+    .badge-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin: 1.25rem 0; }
+    .place-card { background: white; border: 1px solid var(--gray-200); border-radius: 14px; padding: 1rem 1.25rem; transition: transform .15s, box-shadow .15s; }
+    .place-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .place-card .pc-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; }
+    .place-card .pc-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .place-card .pc-id { background: var(--gray-100); color: var(--gray-500); padding: 2px 8px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; margin-left: auto; }
+    .place-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.15rem; }
+    .place-card .pc-en { font-size: 0.72rem; color: var(--gray-500); margin-bottom: 0.4rem; }
+    .place-card .pc-meta { font-size: 0.78rem; color: var(--gray-500); display: flex; flex-wrap: wrap; gap: 8px; }
+    .place-card .pc-meta span { background: var(--gray-100); padding: 1px 8px; border-radius: 10px; }
+    .pc-grade { font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 10px; }
+    .pc-grade.common { background: #fef3c7; color: #92400e; }
+    .pc-grade.rare { background: #dbeafe; color: #0d47a1; }
+    .pc-grade.special { background: #fce4ec; color: #880e4f; }
+    .pc-desc { font-size: 0.78rem; color: var(--gray-500); margin-top: 0.5rem; padding-top: 0.5rem; border-top: 1px dashed var(--gray-200); }
+    .pc-coords { font-family: "Courier New", monospace; font-size: 0.7rem; color: var(--gray-500); margin-top: 0.25rem; }
+
+    blockquote { border-left: 4px solid var(--blue); background: var(--blue-light); padding: 0.75rem 1rem; margin: 1rem 0; color: var(--blue-dark); border-radius: 0 8px 8px 0; }
+
+    footer { background: var(--gray-900); color: var(--gray-500); padding: 2rem 5%; text-align: center; font-size: 0.78rem; }
+    footer a { color: var(--gray-500); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">🗺 Voyna</a>
+  <div class="nav-links">
+    <a href="index.html">홈</a>
+    <a href="seoul-50.html" class="active">📍 명소 50곳</a>
+    <a href="badge-design.html">🎨 배지 디자인</a>
+    <a href="https://github.com/AlexSong0674/test" target="_blank">GitHub</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1>📍 서울 초기 명소 <span class="num">50곳</span></h1>
+    <p>MVP 런칭 시점 입력 대상 DB. 자세한 원본은 <code>data/seoul_50_locations.csv</code>에 있습니다.</p>
+    <div class="meta">
+      <span class="chip">버전 <strong>v1.0</strong></span>
+      <span class="chip">좌표계 <strong>WGS84</strong></span>
+      <span class="chip">총 <strong>50개</strong></span>
+      <span class="chip">최종 <strong>2026-05-12</strong></span>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+
+  <h2>📊 등급 & 카테고리 분포</h2>
+
+  <div class="stats">
+    <div class="stat-card"><span class="num">38</span><div class="label">일반 (자동 획득, +50XP)</div></div>
+    <div class="stat-card"><span class="num">9</span><div class="label">💎 희귀 (확인 팝업, +150XP)</div></div>
+    <div class="stat-card"><span class="num">3</span><div class="label">⭐ 특별 (랜드마크, +300~400XP)</div></div>
+    <div class="stat-card"><span class="num">50</span><div class="label">합계</div></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr><th>카테고리</th><th>개수</th><th>대표 명소</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>역사 (고궁·문화재)</td><td>10</td><td>경복궁⭐, 창덕궁💎, 종묘💎, 청와대⭐</td></tr>
+      <tr><td>한옥/거리</td><td>5</td><td>북촌💎, 인사동, 익선동</td></tr>
+      <tr><td>랜드마크</td><td>7</td><td>N서울타워⭐, 롯데월드타워💎, DDP</td></tr>
+      <tr><td>시장</td><td>3</td><td>광장시장, 남대문, 망원시장</td></tr>
+      <tr><td>거리/번화가</td><td>5</td><td>명동, 홍대, 강남역, 이태원</td></tr>
+      <tr><td>한강 공원</td><td>7</td><td>여의도, 반포💎, 잠실, 노들섬💎</td></tr>
+      <tr><td>자연/공원</td><td>7</td><td>북한산⭐, 인왕산💎, 청계산💎, 서울숲</td></tr>
+      <tr><td>박물관/문화</td><td>5</td><td>국립중앙박물관💎, 리움💎, MMCA</td></tr>
+      <tr><td>기타</td><td>1</td><td>청계광장</td></tr>
+    </tbody>
+  </table>
+
+  <h2>🗂 명소 전체 리스트</h2>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterPlaces(this,'all')">전체 (50)</button>
+    <button class="filter-btn" onclick="filterPlaces(this,'special')">⭐ 특별</button>
+    <button class="filter-btn" onclick="filterPlaces(this,'rare')">💎 희귀</button>
+    <button class="filter-btn" onclick="filterPlaces(this,'common')">일반</button>
+    <button class="filter-btn" onclick="filterPlaces(this,'역사')">역사</button>
+    <button class="filter-btn" onclick="filterPlaces(this,'랜드마크')">랜드마크</button>
+    <button class="filter-btn" onclick="filterPlaces(this,'한강')">한강</button>
+    <button class="filter-btn" onclick="filterPlaces(this,'자연')">자연</button>
+    <button class="filter-btn" onclick="filterPlaces(this,'문화')">문화</button>
+    <button class="filter-btn" onclick="filterPlaces(this,'거리')">거리</button>
+  </div>
+
+  <div class="badge-card-grid" id="placeGrid"></div>
+
+  <h2>📝 데이터 입력 시 주의사항</h2>
+  <ul style="padding-left:1.5rem;font-size:0.92rem;color:var(--gray-500);line-height:1.9">
+    <li>반경(<code>radius_m</code>)은 명소 규모에 따라 조정 — 일반적으로 80~250m</li>
+    <li>좌표는 명소 중심부 기준 (정문/대표 지점)</li>
+    <li>실내 명소(박물관·도서관 등)는 반경을 작게(60~100m) 설정</li>
+    <li>자연 명소(산·공원)는 반경을 크게(200~300m) 설정</li>
+  </ul>
+
+  <blockquote>
+    ⭐ 특별 등급 (3곳): 경복궁 · N서울타워 · 청와대 · 북한산 — 서울을 대표하는 아이콘 랜드마크<br>
+    💎 희귀 등급 (9곳): 등급이 높은 만큼 깊이 있는 장소 경험 + "확인" 팝업으로 의도 재확인
+  </blockquote>
+
+</div>
+
+<footer>
+  © 2026 Voyna · 서울 초기 명소 50곳 DB · <a href="https://github.com/AlexSong0674/test/blob/main/data/seoul_50_locations.csv">CSV 원본 보기</a>
+</footer>
+
+<script>
+const places = [
+  {id:1, name:"경복궁", en:"Gyeongbokgung Palace", lat:37.5796, lng:126.9770, r:150, cat:"역사", district:"종로구", grade:"special", xp:300, conf:true, desc:"조선왕조 정궁·5대궁 중 최대 규모", icon:"🏯", color:"#C8102E"},
+  {id:2, name:"창덕궁", en:"Changdeokgung", lat:37.5794, lng:126.9910, r:150, cat:"역사", district:"종로구", grade:"rare", xp:150, conf:true, desc:"유네스코 세계문화유산", icon:"🏯", color:"#1F5E3B"},
+  {id:3, name:"창경궁", en:"Changgyeonggung", lat:37.5784, lng:126.9947, r:120, cat:"역사", district:"종로구", grade:"common", xp:50, conf:false, desc:"조선시대 동궐", icon:"🏯", color:"#8B4513"},
+  {id:4, name:"덕수궁", en:"Deoksugung", lat:37.5658, lng:126.9751, r:120, cat:"역사", district:"중구", grade:"rare", xp:150, conf:true, desc:"석조전·동서양 건축 혼재", icon:"🏛", color:"#D4AF37"},
+  {id:5, name:"종묘", en:"Jongmyo Shrine", lat:37.5745, lng:126.9942, r:120, cat:"역사", district:"종로구", grade:"rare", xp:150, conf:true, desc:"왕·왕비 신위 모신 유교 사당", icon:"⛩", color:"#4A4A4A"},
+  {id:6, name:"운현궁", en:"Unhyeongung", lat:37.5715, lng:126.9858, r:80, cat:"역사", district:"종로구", grade:"common", xp:50, conf:false, desc:"흥선대원군 사저", icon:"🏯", color:"#5C4033"},
+  {id:7, name:"광화문 광장", en:"Gwanghwamun Sq.", lat:37.5760, lng:126.9769, r:100, cat:"랜드마크", district:"종로구", grade:"common", xp:50, conf:false, desc:"서울의 상징 광장·세종대왕 동상", icon:"🗿", color:"#003478"},
+  {id:8, name:"숭례문", en:"Sungnyemun", lat:37.5601, lng:126.9753, r:80, cat:"역사", district:"중구", grade:"common", xp:50, conf:false, desc:"국보 1호·서울 도성 정남문", icon:"🏛", color:"#A0522D"},
+  {id:9, name:"흥인지문 (동대문)", en:"Heunginjimun", lat:37.5712, lng:127.0094, r:80, cat:"역사", district:"종로구", grade:"common", xp:50, conf:false, desc:"보물 1호·서울 도성 정동문", icon:"🏛", color:"#A0522D"},
+  {id:10, name:"보신각", en:"Bosingak", lat:37.5697, lng:126.9839, r:60, cat:"역사", district:"종로구", grade:"common", xp:50, conf:false, desc:"제야의 종 타종 장소", icon:"🔔", color:"#FFD700"},
+  {id:11, name:"북촌 한옥마을", en:"Bukchon Hanok", lat:37.5827, lng:126.9831, r:200, cat:"한옥", district:"종로구", grade:"rare", xp:150, conf:true, desc:"한옥 밀집 지구", icon:"🏘", color:"#6B4226"},
+  {id:12, name:"인사동", en:"Insadong", lat:37.5733, lng:126.9856, r:150, cat:"거리", district:"종로구", grade:"common", xp:50, conf:false, desc:"전통 공예·갤러리·찻집", icon:"🖌", color:"#8B0000"},
+  {id:13, name:"삼청동", en:"Samcheong-dong", lat:37.5825, lng:126.9810, r:150, cat:"거리", district:"종로구", grade:"common", xp:50, conf:false, desc:"갤러리·카페·돌담길", icon:"🍂", color:"#DAA520"},
+  {id:14, name:"익선동", en:"Ikseon-dong", lat:37.5732, lng:126.9882, r:120, cat:"거리", district:"종로구", grade:"common", xp:50, conf:false, desc:"개량 한옥 카페·레트로", icon:"☕", color:"#E07B00"},
+  {id:15, name:"서촌", en:"Seochon", lat:37.5790, lng:126.9700, r:180, cat:"거리", district:"종로구", grade:"common", xp:50, conf:false, desc:"경복궁 서쪽·예술가의 동네", icon:"🎨", color:"#7A6E5E"},
+  {id:16, name:"N서울타워", en:"N Seoul Tower", lat:37.5512, lng:126.9882, r:100, cat:"랜드마크", district:"용산구", grade:"special", xp:300, conf:true, desc:"서울의 상징 타워·연인의 자물쇠", icon:"🗼", color:"#FF6B6B"},
+  {id:17, name:"롯데월드타워", en:"Lotte World Tower", lat:37.5125, lng:127.1025, r:100, cat:"랜드마크", district:"송파구", grade:"rare", xp:150, conf:true, desc:"국내 최고층 555m", icon:"🏙", color:"#1E3A8A"},
+  {id:18, name:"63빌딩", en:"63 Building", lat:37.5197, lng:126.9402, r:80, cat:"랜드마크", district:"영등포구", grade:"common", xp:50, conf:false, desc:"한강변 황금빛 빌딩", icon:"🏢", color:"#FFD700"},
+  {id:19, name:"DDP", en:"Dongdaemun Design Plaza", lat:37.5673, lng:127.0096, r:120, cat:"랜드마크", district:"중구", grade:"common", xp:50, conf:false, desc:"자하 하디드 설계", icon:"🛸", color:"#C0C0C0"},
+  {id:20, name:"서울로 7017", en:"Seoullo 7017", lat:37.5559, lng:126.9716, r:100, cat:"거리", district:"중구", grade:"common", xp:50, conf:false, desc:"서울역 고가 보행자 공원", icon:"🌿", color:"#5DAE5D"},
+  {id:21, name:"코엑스 별마당도서관", en:"Starfield Library COEX", lat:37.5125, lng:127.0590, r:60, cat:"문화", district:"강남구", grade:"common", xp:50, conf:false, desc:"초대형 책장", icon:"📚", color:"#3B82F6"},
+  {id:22, name:"청와대", en:"Cheong Wa Dae", lat:37.5870, lng:126.9747, r:150, cat:"역사", district:"종로구", grade:"special", xp:400, conf:true, desc:"前 대통령 관저·일반 개방", icon:"🏛", color:"#1F4E79"},
+  {id:23, name:"광장시장", en:"Gwangjang Market", lat:37.5703, lng:126.9999, r:80, cat:"시장", district:"종로구", grade:"common", xp:50, conf:false, desc:"한국 최초 상설시장", icon:"🥘", color:"#E63946"},
+  {id:24, name:"남대문시장", en:"Namdaemun Market", lat:37.5602, lng:126.9779, r:100, cat:"시장", district:"중구", grade:"common", xp:50, conf:false, desc:"600년 전통 종합시장", icon:"🛍", color:"#E63946"},
+  {id:25, name:"명동", en:"Myeongdong", lat:37.5636, lng:126.9826, r:200, cat:"거리", district:"중구", grade:"common", xp:50, conf:false, desc:"쇼핑·외국인 관광 중심지", icon:"🛍", color:"#FF69B4"},
+  {id:26, name:"홍대 거리", en:"Hongdae Street", lat:37.5563, lng:126.9233, r:200, cat:"거리", district:"마포구", grade:"common", xp:50, conf:false, desc:"예술·인디·클럽 중심지", icon:"🎸", color:"#9333EA"},
+  {id:27, name:"가로수길", en:"Garosu-gil", lat:37.5202, lng:127.0233, r:150, cat:"거리", district:"강남구", grade:"common", xp:50, conf:false, desc:"은행나무 가로수와 패션 거리", icon:"👗", color:"#FFD700"},
+  {id:28, name:"여의도 한강공원", en:"Yeouido Hangang Park", lat:37.5285, lng:126.9337, r:200, cat:"한강", district:"영등포구", grade:"common", xp:50, conf:false, desc:"벚꽃·불꽃축제", icon:"🌸", color:"#FFB6C1"},
+  {id:29, name:"반포 한강공원", en:"Banpo Hangang Park", lat:37.5117, lng:126.9970, r:200, cat:"한강", district:"서초구", grade:"rare", xp:150, conf:true, desc:"달빛무지개분수·세빛섬", icon:"🌈", color:"#7DD3FC"},
+  {id:30, name:"뚝섬 한강공원", en:"Ttukseom Hangang Park", lat:37.5302, lng:127.0667, r:200, cat:"한강", district:"광진구", grade:"common", xp:50, conf:false, desc:"자벌레 전망대·수영장", icon:"🌊", color:"#10B981"},
+  {id:31, name:"잠실 한강공원", en:"Jamsil Hangang Park", lat:37.5183, lng:127.0822, r:200, cat:"한강", district:"송파구", grade:"common", xp:50, conf:false, desc:"롯데타워 야경 명소", icon:"🌃", color:"#1E40AF"},
+  {id:32, name:"망원 한강공원", en:"Mangwon Hangang Park", lat:37.5527, lng:126.8993, r:180, cat:"한강", district:"마포구", grade:"common", xp:50, conf:false, desc:"석양·돗자리 명소", icon:"🌅", color:"#FB923C"},
+  {id:33, name:"남산공원", en:"Namsan Park", lat:37.5512, lng:126.9942, r:200, cat:"자연", district:"중구", grade:"common", xp:50, conf:false, desc:"서울 도심의 푸른 허파", icon:"🌲", color:"#15803D"},
+  {id:34, name:"북한산 국립공원", en:"Bukhansan Nat'l Park", lat:37.6584, lng:126.9870, r:300, cat:"자연", district:"은평구", grade:"special", xp:400, conf:true, desc:"서울의 명산·백운대 정상", icon:"⛰", color:"#374151"},
+  {id:35, name:"인왕산", en:"Inwangsan", lat:37.5818, lng:126.9573, r:200, cat:"자연", district:"종로구", grade:"rare", xp:150, conf:true, desc:"호랑이 전설·서울 성곽 코스", icon:"🐯", color:"#92400E"},
+  {id:36, name:"청계산", en:"Cheonggyesan", lat:37.4348, lng:127.0454, r:250, cat:"자연", district:"서초구", grade:"rare", xp:150, conf:true, desc:"수도권 단풍 명산", icon:"🍁", color:"#DC2626"},
+  {id:37, name:"서울숲", en:"Seoul Forest", lat:37.5444, lng:127.0376, r:250, cat:"자연", district:"성동구", grade:"common", xp:50, conf:false, desc:"도심 속 사슴 사육·생태 공원", icon:"🦌", color:"#65A30D"},
+  {id:38, name:"올림픽공원", en:"Olympic Park", lat:37.5202, lng:127.1217, r:300, cat:"자연", district:"송파구", grade:"common", xp:50, conf:false, desc:"86 올림픽 유산·9경 산책로", icon:"🕊", color:"#0EA5E9"},
+  {id:39, name:"국립중앙박물관", en:"Nat'l Museum of Korea", lat:37.5240, lng:126.9803, r:150, cat:"문화", district:"용산구", grade:"rare", xp:150, conf:true, desc:"한국 최대 박물관·반가사유상", icon:"🗿", color:"#7C2D12"},
+  {id:40, name:"MMCA 서울", en:"MMCA Seoul", lat:37.5790, lng:126.9802, r:100, cat:"문화", district:"종로구", grade:"common", xp:50, conf:false, desc:"국립현대미술관 서울관", icon:"🎨", color:"#1F2937"},
+  {id:41, name:"리움미술관", en:"Leeum Museum of Art", lat:37.5384, lng:126.9994, r:80, cat:"문화", district:"용산구", grade:"rare", xp:150, conf:true, desc:"삼성 운영·고미술+현대미술", icon:"🖼", color:"#78350F"},
+  {id:42, name:"전쟁기념관", en:"War Memorial", lat:37.5366, lng:126.9774, r:150, cat:"문화", district:"용산구", grade:"common", xp:50, conf:false, desc:"한국전쟁 추모·야외 전시", icon:"🪖", color:"#1E293B"},
+  {id:43, name:"국립민속박물관", en:"Nat'l Folk Museum", lat:37.5811, lng:126.9774, r:100, cat:"문화", district:"종로구", grade:"common", xp:50, conf:false, desc:"한국 전통 생활", icon:"🏮", color:"#92400E"},
+  {id:44, name:"강남역", en:"Gangnam Station", lat:37.4979, lng:127.0276, r:180, cat:"거리", district:"강남구", grade:"common", xp:50, conf:false, desc:"서울 최대 유동인구·번화가", icon:"🌆", color:"#0EA5E9"},
+  {id:45, name:"이태원", en:"Itaewon", lat:37.5347, lng:126.9947, r:180, cat:"거리", district:"용산구", grade:"common", xp:50, conf:false, desc:"글로벌 거리·다양한 문화", icon:"🌍", color:"#A855F7"},
+  {id:46, name:"서울식물원", en:"Seoul Botanic Park", lat:37.5694, lng:126.8359, r:250, cat:"자연", district:"강서구", grade:"common", xp:50, conf:false, desc:"서남권 최대 식물원·온실", icon:"🌺", color:"#16A34A"},
+  {id:47, name:"청계광장", en:"Cheonggye Plaza", lat:37.5694, lng:126.9783, r:80, cat:"거리", district:"종로구", grade:"common", xp:50, conf:false, desc:"청계천 시작점", icon:"💧", color:"#06B6D4"},
+  {id:48, name:"한강대교 노들섬", en:"Nodeul Island", lat:37.5169, lng:126.9602, r:150, cat:"한강", district:"용산구", grade:"rare", xp:150, conf:true, desc:"한강 위 음악 섬·라이브 공연", icon:"🎶", color:"#8B5CF6"},
+  {id:49, name:"광나루 한강공원", en:"Gwangnaru Hangang Park", lat:37.5476, lng:127.1219, r:200, cat:"한강", district:"광진구", grade:"common", xp:50, conf:false, desc:"수상레저·아차산 연계", icon:"⛵", color:"#0284C7"},
+  {id:50, name:"망원시장", en:"Mangwon Market", lat:37.5564, lng:126.9043, r:120, cat:"시장", district:"마포구", grade:"common", xp:50, conf:false, desc:"로컬 맛집·MZ 핫플", icon:"🍡", color:"#F59E0B"},
+];
+
+const gradeLabel = { common:"일반", rare:"💎 희귀", special:"⭐ 특별" };
+
+function renderPlaces(filter='all') {
+  const grid = document.getElementById('placeGrid');
+  let items = places;
+  if (filter !== 'all') {
+    if (['common','rare','special'].includes(filter)) {
+      items = places.filter(p => p.grade === filter);
+    } else {
+      items = places.filter(p => p.cat === filter);
+    }
+  }
+  grid.innerHTML = items.map(p => `
+    <div class="place-card" style="border-top: 3px solid ${p.color}">
+      <div class="pc-head">
+        <div class="pc-icon">${p.icon}</div>
+        <div style="flex:1;min-width:0">
+          <h4>${p.name}</h4>
+          <div class="pc-en">${p.en}</div>
+        </div>
+        <div class="pc-id">#${p.id}</div>
+      </div>
+      <div class="pc-meta">
+        <span class="pc-grade ${p.grade}">${gradeLabel[p.grade]} +${p.xp}XP</span>
+        <span>${p.cat}</span>
+        <span>${p.district}</span>
+        ${p.conf ? '<span style="background:#fef3c7;color:#92400e">✓ 확인형</span>' : ''}
+      </div>
+      <div class="pc-desc">${p.desc}</div>
+      <div class="pc-coords">📍 ${p.lat}, ${p.lng} · 반경 ${p.r}m</div>
+    </div>
+  `).join('');
+}
+
+function filterPlaces(btn, filter) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPlaces(filter);
+}
+
+renderPlaces();
+</script>
+
+</body>
+</html>

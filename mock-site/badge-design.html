@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voyna — 배지 디자인 시안 브리프</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #0071e3; --blue-dark: #0051a8; --blue-light: #e8f4fd;
+      --purple: #af52de; --gold: #FFD700;
+      --gray-100: #f5f5f7; --gray-200: #e5e5e7; --gray-300: #d1d1d6;
+      --gray-500: #86868b; --gray-900: #1d1d1f;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", sans-serif; color: var(--gray-900); background: #fff; line-height: 1.7; }
+
+    nav { position: sticky; top: 0; z-index: 100; background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); border-bottom: 1px solid var(--gray-200); padding: 12px 5%; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-size: 1.1rem; font-weight: 800; color: var(--blue); text-decoration: none; }
+    .nav-links { display: flex; gap: 1.25rem; }
+    .nav-links a { font-size: 0.85rem; color: var(--gray-500); text-decoration: none; }
+    .nav-links a:hover { color: var(--gray-900); }
+    .nav-links a.active { color: var(--blue); font-weight: 600; }
+
+    .hero { padding: 48px 5% 32px; background: linear-gradient(135deg, #f0f7ff 0%, #fff5ff 100%); border-bottom: 1px solid var(--gray-200); }
+    .hero-inner { max-width: 960px; margin: 0 auto; }
+    .hero h1 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+    .hero p { color: var(--gray-500); font-size: 1rem; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 32px 5% 80px; }
+
+    h2 { font-size: 1.4rem; font-weight: 800; margin: 2.5rem 0 0.75rem; padding-top: 1rem; border-top: 2px solid var(--blue); color: var(--gray-900); }
+    h2:first-of-type { margin-top: 0.5rem; padding-top: 0; border-top: none; }
+    h3 { font-size: 1.05rem; font-weight: 700; margin: 1.25rem 0 0.5rem; color: var(--blue-dark); }
+    p { margin: 0.5rem 0; }
+
+    /* GRADE FRAMES PREVIEW */
+    .grade-frames { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.25rem; margin: 1.5rem 0; }
+    .frame-card { background: white; border: 1px solid var(--gray-200); border-radius: 16px; padding: 1.5rem 1rem; text-align: center; transition: transform .15s, box-shadow .15s; }
+    .frame-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+    .frame-preview { width: 110px; height: 110px; margin: 0 auto 1rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; position: relative; }
+    /* 일반 */
+    .frame-preview.common { background: linear-gradient(135deg, #fff8e1, #ffe082); border: 4px solid #9e9e9e; }
+    /* 희귀 */
+    .frame-preview.rare { background: linear-gradient(135deg, #e3f2fd, #90caf9); border: 5px double #1976d2; box-shadow: 0 0 16px rgba(25,118,210,0.3); }
+    .frame-preview.rare::before { content: '★'; position: absolute; top: -8px; right: -4px; color: #1976d2; font-size: 1.2rem; }
+    /* 특별 */
+    .frame-preview.special { background: linear-gradient(135deg, #fce4ec, #f48fb1); border: 6px solid #e91e63; box-shadow: 0 0 24px rgba(233,30,99,0.5), inset 0 0 20px rgba(255,255,255,0.5); }
+    .frame-preview.special::before { content: '★★★'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); color: #e91e63; font-size: 0.9rem; letter-spacing: 2px; }
+    /* 프리미어 */
+    .frame-preview.premier { background: linear-gradient(135deg, #fff9c4, #ffd700); border: 6px solid #f57f17; box-shadow: 0 0 28px rgba(255,215,0,0.7), inset 0 0 24px rgba(255,255,255,0.6); }
+    .frame-preview.premier::before { content: '👑'; position: absolute; top: -16px; left: 50%; transform: translateX(-50%); font-size: 1.5rem; }
+    .frame-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .frame-card .frame-meta { font-size: 0.78rem; color: var(--gray-500); }
+    .frame-card .frame-xp { display: inline-block; margin-top: 0.5rem; padding: 2px 10px; border-radius: 10px; font-size: 0.72rem; font-weight: 700; }
+    .frame-xp.common { background: #fef3c7; color: #92400e; }
+    .frame-xp.rare { background: #dbeafe; color: #0d47a1; }
+    .frame-xp.special { background: #fce4ec; color: #880e4f; }
+    .frame-xp.premier { background: #fff9c4; color: #f57f17; }
+
+    /* COLOR PALETTE */
+    .palette { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+    .color-swatch { background: white; border: 1px solid var(--gray-200); border-radius: 10px; overflow: hidden; }
+    .color-swatch .swatch { height: 60px; }
+    .color-swatch .swatch-info { padding: 0.5rem 0.75rem; font-size: 0.75rem; }
+    .color-swatch .sw-name { font-weight: 600; }
+    .color-swatch .sw-hex { color: var(--gray-500); font-family: "Courier New", monospace; font-size: 0.7rem; }
+
+    /* BADGE PREVIEW GRID */
+    .badge-section-title { display: flex; justify-content: space-between; align-items: baseline; margin: 1.5rem 0 0.75rem; }
+    .badge-section-title h3 { margin: 0; }
+    .badge-section-title .count { font-size: 0.8rem; color: var(--gray-500); }
+
+    .badge-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.875rem; margin: 1rem 0; }
+    .badge-prev { background: white; border: 1px solid var(--gray-200); border-radius: 14px; padding: 1rem 0.75rem; text-align: center; transition: transform .15s, box-shadow .15s; cursor: default; position: relative; }
+    .badge-prev:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+    .badge-prev .bp-circle { width: 78px; height: 78px; margin: 0 auto 0.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; position: relative; }
+    .badge-prev .bp-circle.common { border: 3px solid #9e9e9e; }
+    .badge-prev .bp-circle.rare { border: 4px double #1976d2; box-shadow: 0 0 12px rgba(25,118,210,0.25); }
+    .badge-prev .bp-circle.special { border: 4px solid #e91e63; box-shadow: 0 0 18px rgba(233,30,99,0.4); }
+    .badge-prev .bp-circle.special::after { content: '★'; position: absolute; top: -6px; right: -6px; background: #e91e63; color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.7rem; display: flex; align-items: center; justify-content: center; }
+    .badge-prev .bp-name { font-size: 0.84rem; font-weight: 700; line-height: 1.3; }
+    .badge-prev .bp-concept { font-size: 0.68rem; color: var(--gray-500); margin-top: 0.25rem; line-height: 1.4; }
+    .badge-prev .bp-id { position: absolute; top: 8px; left: 10px; font-size: 0.6rem; color: var(--gray-300); font-weight: 700; }
+
+    /* FX EFFECTS DEMO */
+    .fx-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 1rem 0; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+    .fx-table th { background: var(--blue); color: white; padding: 10px 14px; text-align: left; font-weight: 700; font-size: 0.85rem; }
+    .fx-table td { padding: 10px 14px; border-top: 1px solid var(--gray-200); background: white; font-size: 0.9rem; }
+    .fx-table tr:nth-child(even) td { background: var(--blue-light); }
+
+    /* BUDGET CARDS */
+    .budget-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin: 1rem 0; }
+    .budget-card { background: white; border: 2px solid var(--gray-200); border-radius: 14px; padding: 1.25rem; transition: all .15s; }
+    .budget-card.recommended { border-color: var(--blue); background: var(--blue-light); position: relative; }
+    .budget-card.recommended::before { content: '⭐ MVP 권장'; position: absolute; top: -10px; right: 12px; background: var(--blue); color: white; padding: 2px 10px; border-radius: 12px; font-size: 0.7rem; font-weight: 700; }
+    .budget-card h4 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .budget-card .price { font-size: 1.4rem; font-weight: 800; color: var(--blue); margin: 0.25rem 0; }
+    .budget-card .price small { font-size: 0.7rem; color: var(--gray-500); font-weight: normal; }
+    .budget-card .total { font-size: 0.85rem; color: var(--gray-500); margin-bottom: 0.5rem; }
+    .budget-card .note { font-size: 0.75rem; color: var(--gray-500); border-top: 1px dashed var(--gray-300); padding-top: 0.5rem; margin-top: 0.5rem; }
+
+    ul { padding-left: 1.5rem; margin: 0.5rem 0; }
+    li { margin: 4px 0; font-size: 0.92rem; color: var(--gray-500); }
+
+    blockquote { border-left: 4px solid var(--blue); background: var(--blue-light); padding: 0.75rem 1rem; margin: 1rem 0; color: var(--blue-dark); border-radius: 0 8px 8px 0; }
+
+    code { background: var(--gray-100); padding: 1px 6px; border-radius: 4px; font-family: "Courier New", monospace; font-size: 0.85rem; color: #c8102e; }
+
+    footer { background: var(--gray-900); color: var(--gray-500); padding: 2rem 5%; text-align: center; font-size: 0.78rem; }
+    footer a { color: var(--gray-500); }
+
+    .filters { display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: wrap; }
+    .filter-btn { padding: 5px 12px; border-radius: 14px; border: 2px solid var(--gray-300); background: white; color: var(--gray-500); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all .15s; }
+    .filter-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">🗺 Voyna</a>
+  <div class="nav-links">
+    <a href="index.html">홈</a>
+    <a href="seoul-50.html">📍 명소 50곳</a>
+    <a href="badge-design.html" class="active">🎨 배지 디자인</a>
+    <a href="https://github.com/AlexSong0674/test" target="_blank">GitHub</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1>🎨 배지 디자인 시안 브리프</h1>
+    <p>디자이너(외주 또는 Canva 작업자)에게 전달할 50종 배지 디자인 명세서. SVG/PNG 양산 전 합의용 문서입니다.</p>
+  </div>
+</section>
+
+<div class="container">
+
+  <h2>1. 등급별 프레임 미리보기</h2>
+  <p>등급에 따라 외곽 프레임·광택·별 마크가 다르게 적용됩니다.</p>
+  <div class="grade-frames">
+    <div class="frame-card">
+      <div class="frame-preview common">🏯</div>
+      <h4>일반 (Common)</h4>
+      <div class="frame-meta">단색 띠 (회색) / 플랫 컬러</div>
+      <span class="frame-xp common">+50 XP · 자동 획득</span>
+    </div>
+    <div class="frame-card">
+      <div class="frame-preview rare">🏯</div>
+      <h4>💎 희귀 (Rare)</h4>
+      <div class="frame-meta">이중 띠 + 별 ★ / 그라데이션</div>
+      <span class="frame-xp rare">+150 XP · 확인 팝업</span>
+    </div>
+    <div class="frame-card">
+      <div class="frame-preview special">🏯</div>
+      <h4>⭐ 특별 (Special)</h4>
+      <div class="frame-meta">광택 + 별 ★★★ / 펄 텍스처</div>
+      <span class="frame-xp special">+300~400 XP · 컨페티</span>
+    </div>
+    <div class="frame-card">
+      <div class="frame-preview premier">🏯</div>
+      <h4>👑 프리미어 (Premier)</h4>
+      <div class="frame-meta">황금 광택 + 왕관 / 엠보싱</div>
+      <span class="frame-xp premier">+500 XP · 구독자 전용</span>
+    </div>
+  </div>
+
+  <h2>2. 시각 효과 (앱 내 애니메이션)</h2>
+  <table class="fx-table">
+    <thead><tr><th>등급</th><th>지속 시간</th><th>효과</th></tr></thead>
+    <tbody>
+      <tr><td>일반</td><td>1.5초</td><td>짧은 토스트</td></tr>
+      <tr><td>💎 희귀</td><td>2초</td><td>빛나는 별 입자 + 진동</td></tr>
+      <tr><td>⭐ 특별</td><td>3초</td><td>풀스크린 컨페티 + 특수 사운드</td></tr>
+      <tr><td>👑 프리미어</td><td>3.5초</td><td>황금 광채 + 왕관 등장 + 화려한 사운드</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. 브랜드 컬러 팔레트</h2>
+  <div class="palette">
+    <div class="color-swatch"><div class="swatch" style="background:#0071E3"></div><div class="swatch-info"><div class="sw-name">Voyna Blue</div><div class="sw-hex">#0071E3</div></div></div>
+    <div class="color-swatch"><div class="swatch" style="background:#AF52DE"></div><div class="swatch-info"><div class="sw-name">Voyage Purple</div><div class="sw-hex">#AF52DE</div></div></div>
+    <div class="color-swatch"><div class="swatch" style="background:#FFD700"></div><div class="swatch-info"><div class="sw-name">Discovery Gold</div><div class="sw-hex">#FFD700</div></div></div>
+    <div class="color-swatch"><div class="swatch" style="background:#16A34A"></div><div class="swatch-info"><div class="sw-name">자연 카테고리</div><div class="sw-hex">#16A34A</div></div></div>
+    <div class="color-swatch"><div class="swatch" style="background:#8B4513"></div><div class="swatch-info"><div class="sw-name">역사 카테고리</div><div class="sw-hex">#8B4513</div></div></div>
+    <div class="color-swatch"><div class="swatch" style="background:#0EA5E9"></div><div class="swatch-info"><div class="sw-name">한강 카테고리</div><div class="sw-hex">#0EA5E9</div></div></div>
+    <div class="color-swatch"><div class="swatch" style="background:#7C2D12"></div><div class="swatch-info"><div class="sw-name">문화 카테고리</div><div class="sw-hex">#7C2D12</div></div></div>
+  </div>
+
+  <h2>4. 50종 배지 시안</h2>
+  <p>등급별·카테고리별로 필터링해서 확인할 수 있습니다.</p>
+
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterBadges(this,'all')">전체 (50)</button>
+    <button class="filter-btn" onclick="filterBadges(this,'special')">⭐ 특별 (3)</button>
+    <button class="filter-btn" onclick="filterBadges(this,'rare')">💎 희귀 (9)</button>
+    <button class="filter-btn" onclick="filterBadges(this,'common')">일반 (38)</button>
+    <button class="filter-btn" onclick="filterBadges(this,'역사')">역사 (10)</button>
+    <button class="filter-btn" onclick="filterBadges(this,'한강')">한강 (7)</button>
+    <button class="filter-btn" onclick="filterBadges(this,'자연')">자연 (7)</button>
+    <button class="filter-btn" onclick="filterBadges(this,'문화')">문화 (5)</button>
+    <button class="filter-btn" onclick="filterBadges(this,'랜드마크')">랜드마크 (7)</button>
+  </div>
+
+  <div class="badge-preview-grid" id="badgeGrid"></div>
+
+  <h2>5. 디자이너 산출물 목록</h2>
+  <ol style="padding-left:1.5rem;font-size:0.92rem;color:var(--gray-500);line-height:1.9">
+    <li><strong>50종 배지 SVG/PNG</strong> (256/512/1024 3종 사이즈)</li>
+    <li><strong>4종 프레임</strong> (일반/희귀/특별/프리미어) — 합성 가능한 레이어 분리</li>
+    <li><strong>시즌 한정 배지 변형 템플릿</strong> (벚꽃·단풍·눈송이 오버레이)</li>
+    <li><strong>배지 잠금 실루엣 버전</strong> (미수집 표시용, 회색조 + 자물쇠 아이콘)</li>
+    <li><strong>앱 스토어 / SNS용 4종 대표 배지</strong> (1080×1080) — 마케팅용</li>
+  </ol>
+
+  <h2>6. 발주 예산 가이드</h2>
+  <div class="budget-grid">
+    <div class="budget-card">
+      <h4>Canva 직접 제작</h4>
+      <div class="price">0원</div>
+      <div class="total">50종 총 0원</div>
+      <div class="note">시간 多, 톤 일관성 ↓</div>
+    </div>
+    <div class="budget-card">
+      <h4>크몽/숨고 외주</h4>
+      <div class="price">3~8만 원<small> / 종</small></div>
+      <div class="total">50종 총 150~400만 원</div>
+      <div class="note">표준 옵션, 안정적 품질</div>
+    </div>
+    <div class="budget-card">
+      <h4>전문 일러스트레이터</h4>
+      <div class="price">10~20만 원<small> / 종</small></div>
+      <div class="total">50종 총 500~1,000만 원</div>
+      <div class="note">고품질, 차별화된 브랜드</div>
+    </div>
+    <div class="budget-card recommended">
+      <h4>AI 일러스트 + 후가공</h4>
+      <div class="price">1~3만 원<small> / 종</small></div>
+      <div class="total">50종 총 50~150만 원</div>
+      <div class="note">빠르고 저렴, 톤 통일 필요</div>
+    </div>
+  </div>
+
+  <blockquote>
+    <strong>MVP 권장 전략</strong>: AI 일러스트 (Midjourney·DALL-E 3) + Canva 후가공으로 빠르게 시작 → 사용자 반응 확인 후 외주 업그레이드. 우선 대표 5종(경복궁·N서울타워·청와대·북한산·홍대)을 제작해 호감도 조사.
+  </blockquote>
+
+  <h2>7. 라이선스 주의사항</h2>
+  <ul>
+    <li>AI 생성 이미지는 상업적 사용 가능 여부 확인 (Midjourney Pro 가능, DALL-E 3 OpenAI 가능)</li>
+    <li>외주 의뢰 시 <strong>저작권 양도</strong> 명시 (단순 사용권 X)</li>
+    <li>한국 문화재 모티프는 공공재이나, 특정 박물관 소장 유물은 사진 사용권 확인 필요</li>
+  </ul>
+
+  <h2>8. 향후 확장 시나리오</h2>
+  <h3>시즌 배지 추가 (V1.1+)</h3>
+  <ul>
+    <li>봄: 벚꽃 오버레이 (3월 말 ~ 4월 초)</li>
+    <li>여름: 한강 불꽃놀이 오버레이 (10월)</li>
+    <li>가을: 단풍 오버레이 (10~11월)</li>
+    <li>겨울: 눈송이 오버레이 (12~2월)</li>
+  </ul>
+
+  <h3>프리미어 변형 (V1.2 구독 도입 시)</h3>
+  <ul>
+    <li>동일 명소의 황금 광택 + 입체 엠보싱 버전</li>
+    <li>일반 배지 보유 시에만 잠금 해제 (수집 동기 부여)</li>
+  </ul>
+
+  <h3>한정 콜라보 배지 (V1.3+)</h3>
+  <ul>
+    <li>관광청 협업: 공식 인장 추가</li>
+    <li>지자체 협업: 자치구 마크 + 색</li>
+    <li>인플루언서 콜라보: 추천인 사인/아이콘</li>
+  </ul>
+
+</div>
+
+<footer>
+  © 2026 Voyna · 배지 디자인 시안 브리프 · <a href="https://github.com/AlexSong0674/test/blob/main/design/badge_design_brief.md">원본 MD 보기</a>
+</footer>
+
+<script>
+const badges = [
+  // 역사
+  {id:1, name:"경복궁", grade:"special", cat:"역사", icon:"🏯", concept:"근정전 단청 + 청기와 + 황금 테두리"},
+  {id:2, name:"창덕궁", grade:"rare", cat:"역사", icon:"🏯", concept:"후원 연못 + 소나무 실루엣"},
+  {id:3, name:"창경궁", grade:"common", cat:"역사", icon:"🏯", concept:"명정전 단청 패턴"},
+  {id:4, name:"덕수궁", grade:"rare", cat:"역사", icon:"🏛", concept:"석조전 정면 콜로네이드"},
+  {id:5, name:"종묘", grade:"rare", cat:"역사", icon:"⛩", concept:"긴 정전 회랑의 절제된 라인"},
+  {id:6, name:"운현궁", grade:"common", cat:"역사", icon:"🏯", concept:"한옥 솟을대문"},
+  {id:7, name:"광화문 광장", grade:"common", cat:"랜드마크", icon:"🗿", concept:"세종대왕 좌상 + 한글 자모"},
+  {id:8, name:"숭례문", grade:"common", cat:"역사", icon:"🏛", concept:"누각 처마선 클로즈업"},
+  {id:9, name:"흥인지문", grade:"common", cat:"역사", icon:"🏛", concept:"동대문 측면 실루엣"},
+  {id:10, name:"보신각", grade:"common", cat:"역사", icon:"🔔", concept:"큰 종 + 종지기 막대"},
+  // 한옥/거리
+  {id:11, name:"북촌 한옥마을", grade:"rare", cat:"한옥", icon:"🏘", concept:"기와지붕 골목 + N서울타워"},
+  {id:12, name:"인사동", grade:"common", cat:"거리", icon:"🖌", concept:"붓·먹 + 한자 인(印) 도장"},
+  {id:13, name:"삼청동", grade:"common", cat:"거리", icon:"🍂", concept:"돌담길 + 단풍 은행나무"},
+  {id:14, name:"익선동", grade:"common", cat:"거리", icon:"☕", concept:"개량 한옥 카페 간판"},
+  {id:15, name:"서촌", grade:"common", cat:"거리", icon:"🎨", concept:"통인시장 도시락 + 옛 가옥"},
+  // 랜드마크
+  {id:16, name:"N서울타워", grade:"special", cat:"랜드마크", icon:"🗼", concept:"야경 + 사랑의 자물쇠, 황금 광채"},
+  {id:17, name:"롯데월드타워", grade:"rare", cat:"랜드마크", icon:"🏙", concept:"초고층 타워 + 한강 야경"},
+  {id:18, name:"63빌딩", grade:"common", cat:"랜드마크", icon:"🏢", concept:"황금빛 빌딩 + 한강 반사"},
+  {id:19, name:"DDP", grade:"common", cat:"랜드마크", icon:"🛸", concept:"자하 하디드의 곡선 메탈"},
+  {id:20, name:"서울로 7017", grade:"common", cat:"거리", icon:"🌿", concept:"식물이 자란 하늘길"},
+  {id:21, name:"별마당도서관", grade:"common", cat:"문화", icon:"📚", concept:"거대 책장 + 사람 실루엣"},
+  {id:22, name:"청와대", grade:"special", cat:"랜드마크", icon:"🏛", concept:"청기와 본관 + 솔숲, 황금 테두리"},
+  // 시장
+  {id:23, name:"광장시장", grade:"common", cat:"시장", icon:"🥘", concept:"빈대떡 + 잔치국수 그릇"},
+  {id:24, name:"남대문시장", grade:"common", cat:"시장", icon:"🛍", concept:"상점가 + 갈치 모티프"},
+  // 거리/번화가
+  {id:25, name:"명동", grade:"common", cat:"거리", icon:"🛍", concept:"화장품 + 네온 간판"},
+  {id:26, name:"홍대 거리", grade:"common", cat:"거리", icon:"🎸", concept:"스프레이 아트 + 기타"},
+  {id:27, name:"가로수길", grade:"common", cat:"거리", icon:"👗", concept:"은행나무 가로수 + 쇼핑백"},
+  // 한강
+  {id:28, name:"여의도 한강공원", grade:"common", cat:"한강", icon:"🌸", concept:"벚꽃 + 한강 다리 실루엣"},
+  {id:29, name:"반포 한강공원", grade:"rare", cat:"한강", icon:"🌈", concept:"달빛무지개분수 + 무지개"},
+  {id:30, name:"뚝섬 한강공원", grade:"common", cat:"한강", icon:"🌊", concept:"자벌레 전망대 + 한강뷰"},
+  {id:31, name:"잠실 한강공원", grade:"common", cat:"한강", icon:"🌃", concept:"롯데타워 + 야경 한강"},
+  {id:32, name:"망원 한강공원", grade:"common", cat:"한강", icon:"🌅", concept:"석양 + 강변 텐트"},
+  // 자연
+  {id:33, name:"남산공원", grade:"common", cat:"자연", icon:"🌲", concept:"소나무 + 산책로"},
+  {id:34, name:"북한산", grade:"special", cat:"자연", icon:"⛰", concept:"백운대 봉우리 + 일출, 황금 테두리"},
+  {id:35, name:"인왕산", grade:"rare", cat:"자연", icon:"🐯", concept:"호랑이 + 서울 성곽"},
+  {id:36, name:"청계산", grade:"rare", cat:"자연", icon:"🍁", concept:"단풍나무 + 등산 스틱"},
+  {id:37, name:"서울숲", grade:"common", cat:"자연", icon:"🦌", concept:"사슴 + 나무"},
+  {id:38, name:"올림픽공원", grade:"common", cat:"자연", icon:"🕊", concept:"평화의 문 + 잔디"},
+  // 문화/박물관
+  {id:39, name:"국립중앙박물관", grade:"rare", cat:"문화", icon:"🗿", concept:"반가사유상 실루엣"},
+  {id:40, name:"MMCA 서울", grade:"common", cat:"문화", icon:"🎨", concept:"모던 큐브 + 미술 도구"},
+  {id:41, name:"리움미술관", grade:"rare", cat:"문화", icon:"🖼", concept:"코르텐 메탈 외관 패턴"},
+  {id:42, name:"전쟁기념관", grade:"common", cat:"문화", icon:"🪖", concept:"평화의 시계탑"},
+  {id:43, name:"국립민속박물관", grade:"common", cat:"문화", icon:"🏮", concept:"장승 + 떡살 패턴"},
+  // 기타 거리
+  {id:44, name:"강남역", grade:"common", cat:"거리", icon:"🌆", concept:"네온 사인 + 고층빌딩 스카이라인"},
+  {id:45, name:"이태원", grade:"common", cat:"거리", icon:"🌍", concept:"세계 국기 모자이크 + 글로벌 푸드"},
+  {id:46, name:"서울식물원", grade:"common", cat:"자연", icon:"🌺", concept:"거대 온실 돔 + 열대 식물"},
+  {id:47, name:"청계광장", grade:"common", cat:"거리", icon:"💧", concept:"청계천 조각상 + 물결"},
+  {id:48, name:"노들섬", grade:"rare", cat:"한강", icon:"🎶", concept:"섬 위 음표 + 음악 무대"},
+  {id:49, name:"광나루 한강공원", grade:"common", cat:"한강", icon:"⛵", concept:"요트 + 강물 잔물결"},
+  {id:50, name:"망원시장", grade:"common", cat:"시장", icon:"🍡", concept:"골목 간판 + 떡볶이"},
+];
+
+function renderBadges(filter='all') {
+  const grid = document.getElementById('badgeGrid');
+  let items = badges;
+  if (filter !== 'all') {
+    if (['common','rare','special'].includes(filter)) {
+      items = badges.filter(b => b.grade === filter);
+    } else {
+      items = badges.filter(b => b.cat === filter);
+    }
+  }
+  grid.innerHTML = items.map(b => `
+    <div class="badge-prev">
+      <div class="bp-id">#${b.id}</div>
+      <div class="bp-circle ${b.grade}">${b.icon}</div>
+      <div class="bp-name">${b.name}</div>
+      <div class="bp-concept">${b.concept}</div>
+    </div>
+  `).join('');
+}
+
+function filterBadges(btn, filter) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBadges(filter);
+}
+
+renderBadges();
+</script>
+
+</body>
+</html>
