@@ -135,8 +135,8 @@ Voyna-Demo/
 {
   "id": "assist",
   "name": "ASSIST 강의실",
-  "lat": 37.5500,    // 실제 좌표로 교체 예정
-  "lng": 126.9700,
+  "lat": 37.5573,    // 카카오맵 기준 확정
+  "lng": 126.9485,
   "radius": 50,      // m
   "category": "교육",
   "grade": "special"
@@ -329,7 +329,7 @@ GitHub Actions 배포용은 리포 Settings → Secrets에 동일 키 등록 후
 
 ## 12. 오픈 이슈 / 후속 결정
 
-- [ ] ASSIST 강의실의 정확한 위경도 좌표 확정 (사용자가 알려줘야 함)
+- [x] ASSIST 강의실 좌표 확정: 37.5573, 126.9485 (카카오맵 기준)
 - [ ] 핵심 정성 디자인 배지 정확히 몇 개로 갈지(5 vs 7 vs 10) — Day 2에 진행 상황 보고 결정
 - [ ] 데모 발표 일자 확정 시 `DEMO_SCRIPT.md`에 슬라이드 타임라인 매핑
 - [ ] 발표 후 데모 리포지토리 archive 여부 (즉시 archive vs 본 프로젝트 출시 후 archive)
