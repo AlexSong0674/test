@@ -23,6 +23,7 @@
 - Supabase 백엔드, RLS 정책, Edge Functions
 - AdMob 광고, 구독(Voyna+)
 - 30곳 모든 배지의 정성 디자인 (데모에는 핵심 5~10개만)
+- **시크릿/히든 배지 모드** — 배지별 discovery_mode (public/secret/hidden) 분리. 본 서비스에서 다층 동기부여 곡선 구현 (기획서 6.2.1 참고)
 
 ---
 
