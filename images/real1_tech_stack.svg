@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/><stop offset="100%" style="stop-color:#0d1b3e"/>
+    </linearGradient>
+    <linearGradient id="layer1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#001a40"/><stop offset="100%" style="stop-color:#002a60"/>
+    </linearGradient>
+    <linearGradient id="layer2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#001a20"/><stop offset="100%" style="stop-color:#002a30"/>
+    </linearGradient>
+    <linearGradient id="layer3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1000"/><stop offset="100%" style="stop-color:#2a1800"/>
+    </linearGradient>
+    <linearGradient id="blueg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0071e3"/><stop offset="100%" style="stop-color:#5856d6"/>
+    </linearGradient>
+    <linearGradient id="greeng" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#34c759"/><stop offset="100%" style="stop-color:#30d158"/>
+    </linearGradient>
+    <linearGradient id="orangeg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ff9f0a"/><stop offset="100%" style="stop-color:#ffd60a"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <g opacity="0.04" stroke="white" stroke-width="1">
+    <line x1="0" y1="135" x2="1200" y2="135"/><line x1="0" y1="270" x2="1200" y2="270"/>
+    <line x1="0" y1="405" x2="1200" y2="405"/><line x1="0" y1="540" x2="1200" y2="540"/>
+    <line x1="300" y1="0" x2="300" y2="675"/><line x1="600" y1="0" x2="600" y2="675"/><line x1="900" y1="0" x2="900" y2="675"/>
+  </g>
+
+  <rect x="40" y="30" width="200" height="32" rx="16" fill="rgba(0,113,227,0.2)" stroke="#0071e3" stroke-width="1"/>
+  <text x="140" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#4aabff">🚀 아이디어 실현 01</text>
+
+  <text x="600" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="900" fill="white">노코드·로우코드로 12주 내 MVP 출시</text>
+  <text x="600" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.5)">코딩 비전공자도 실현 가능한 검증된 기술 스택 — 빠르고 저렴하게</text>
+
+  <!-- Architecture layers -->
+
+  <!-- LAYER 1: Frontend -->
+  <rect x="80" y="160" width="1040" height="135" rx="16" fill="url(#layer1)" stroke="rgba(0,113,227,0.4)" stroke-width="1.5"/>
+  <rect x="80" y="160" width="1040" height="4" rx="2" fill="url(#blueg)"/>
+  <text x="110" y="188" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="rgba(0,113,227,0.8)">📱 LAYER 1 — 앱 프론트엔드</text>
+
+  <!-- FlutterFlow -->
+  <rect x="110" y="198" width="280" height="82" rx="12" fill="rgba(0,113,227,0.15)" stroke="rgba(0,113,227,0.35)" stroke-width="1"/>
+  <text x="145" y="228" font-family="Arial, sans-serif" font-size="26">⚡</text>
+  <text x="185" y="225" font-family="Arial, sans-serif" font-size="16" font-weight="800" fill="white">FlutterFlow</text>
+  <text x="185" y="244" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.5)">노코드 앱 빌더</text>
+  <text x="185" y="262" font-family="Arial, sans-serif" font-size="11" fill="#4aabff">iOS + Android 동시 빌드</text>
+
+  <text x="415" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,0.2)">+</text>
+
+  <!-- FCM -->
+  <rect x="440" y="198" width="220" height="82" rx="12" fill="rgba(255,159,10,0.1)" stroke="rgba(255,159,10,0.3)" stroke-width="1"/>
+  <text x="475" y="228" font-family="Arial, sans-serif" font-size="26">🔔</text>
+  <text x="515" y="225" font-family="Arial, sans-serif" font-size="15" font-weight="800" fill="white">FCM</text>
+  <text x="515" y="244" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.5)">Firebase 푸시 알림</text>
+  <text x="515" y="262" font-family="Arial, sans-serif" font-size="11" fill="#ff9f0a">배지 근접 알림</text>
+
+  <text x="685" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,0.2)">+</text>
+
+  <!-- KakaoMap -->
+  <rect x="710" y="198" width="220" height="82" rx="12" fill="rgba(255,214,10,0.1)" stroke="rgba(255,214,10,0.3)" stroke-width="1"/>
+  <text x="745" y="228" font-family="Arial, sans-serif" font-size="26">🗺️</text>
+  <text x="785" y="225" font-family="Arial, sans-serif" font-size="15" font-weight="800" fill="white">카카오맵 API</text>
+  <text x="785" y="244" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.5)">월 300만 건 무료</text>
+  <text x="785" y="262" font-family="Arial, sans-serif" font-size="11" fill="#ffd60a">지도 + GPS 지오펜싱</text>
+
+  <text x="955" y="245" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,0.2)">+</text>
+
+  <!-- Lovable -->
+  <rect x="980" y="198" width="115" height="82" rx="12" fill="rgba(175,82,222,0.1)" stroke="rgba(175,82,222,0.3)" stroke-width="1"/>
+  <text x="1037" y="228" text-anchor="middle" font-family="Arial, sans-serif" font-size="26">🎛️</text>
+  <text x="1037" y="252" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="800" fill="white">Lovable</text>
+  <text x="1037" y="268" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#bf5af2">관리자 대시보드</text>
+
+  <!-- Arrow down -->
+  <text x="600" y="325" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="rgba(255,255,255,0.2)">↕</text>
+
+  <!-- LAYER 2: Backend -->
+  <rect x="80" y="335" width="1040" height="135" rx="16" fill="url(#layer2)" stroke="rgba(52,199,89,0.4)" stroke-width="1.5"/>
+  <rect x="80" y="335" width="1040" height="4" rx="2" fill="url(#greeng)"/>
+  <text x="110" y="363" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="rgba(52,199,89,0.8)">☁️ LAYER 2 — 백엔드 &amp; 데이터베이스</text>
+
+  <!-- Supabase -->
+  <rect x="110" y="373" width="340" height="82" rx="12" fill="rgba(52,199,89,0.12)" stroke="rgba(52,199,89,0.35)" stroke-width="1"/>
+  <text x="150" y="403" font-family="Arial, sans-serif" font-size="26">🗄️</text>
+  <text x="195" y="400" font-family="Arial, sans-serif" font-size="16" font-weight="800" fill="white">Supabase</text>
+  <text x="195" y="419" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.5)">PostgreSQL 기반 BaaS</text>
+  <text x="195" y="437" font-family="Arial, sans-serif" font-size="11" fill="#34c759">무료 플랜으로 MVP 가능 · RLS 보안</text>
+
+  <text x="475" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,0.2)">+</text>
+
+  <!-- Auth -->
+  <rect x="500" y="373" width="220" height="82" rx="12" fill="rgba(52,199,89,0.08)" stroke="rgba(52,199,89,0.25)" stroke-width="1"/>
+  <text x="535" y="403" font-family="Arial, sans-serif" font-size="26">🔐</text>
+  <text x="575" y="400" font-family="Arial, sans-serif" font-size="15" font-weight="800" fill="white">Supabase Auth</text>
+  <text x="575" y="419" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.5)">소셜 로그인 통합</text>
+  <text x="575" y="437" font-family="Arial, sans-serif" font-size="11" fill="#34c759">카카오 / 구글 OAuth</text>
+
+  <text x="745" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="rgba(255,255,255,0.2)">+</text>
+
+  <!-- DB Schema preview -->
+  <rect x="770" y="373" width="325" height="82" rx="12" fill="rgba(52,199,89,0.08)" stroke="rgba(52,199,89,0.2)" stroke-width="1"/>
+  <text x="800" y="398" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="rgba(255,255,255,0.6)">핵심 DB 테이블</text>
+  <text x="800" y="416" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.35)" font-family="monospace">users · locations · badges</text>
+  <text x="800" y="432" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.35)" font-family="monospace">user_badges · xp_log · seasons</text>
+  <text x="800" y="448" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.35)" font-family="monospace">subscriptions</text>
+
+  <!-- Arrow down -->
+  <text x="600" y="498" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="rgba(255,255,255,0.2)">↕</text>
+
+  <!-- Bottom stats -->
+  <rect x="80" y="510" width="490" height="108" rx="16" fill="rgba(255,159,10,0.08)" stroke="rgba(255,159,10,0.25)" stroke-width="1.5"/>
+  <text x="325" y="538" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#ff9f0a">⚡ 개발 속도 우위</text>
+  <text x="325" y="562" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="900" fill="white">12주 내 MVP 출시</text>
+  <text x="325" y="586" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">코딩 비전공자 창업자 · 노코드 스택</text>
+  <text x="325" y="605" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">서울 명소 50곳 배지 DB 사전 구성 완료</text>
+
+  <rect x="630" y="510" width="490" height="108" rx="16" fill="rgba(52,199,89,0.08)" stroke="rgba(52,199,89,0.25)" stroke-width="1.5"/>
+  <text x="875" y="538" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#34c759">💰 초기 비용 최소화</text>
+  <g font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">
+    <text x="660" y="562">✓ FlutterFlow 무료 플랜으로 시작</text>
+    <text x="660" y="583">✓ Supabase 무료 티어 (500MB DB)</text>
+    <text x="660" y="604">✓ 카카오맵 월 300만 건 무료</text>
+  </g>
+</svg>

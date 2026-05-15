@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/><stop offset="100%" style="stop-color:#0d1b3e"/>
+    </linearGradient>
+    <linearGradient id="blueg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0071e3"/><stop offset="100%" style="stop-color:#34c759"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <g opacity="0.04" stroke="white" stroke-width="1">
+    <line x1="0" y1="135" x2="1200" y2="135"/><line x1="0" y1="270" x2="1200" y2="270"/>
+    <line x1="0" y1="405" x2="1200" y2="405"/><line x1="0" y1="540" x2="1200" y2="540"/>
+    <line x1="300" y1="0" x2="300" y2="675"/><line x1="600" y1="0" x2="600" y2="675"/><line x1="900" y1="0" x2="900" y2="675"/>
+  </g>
+
+  <rect x="40" y="30" width="200" height="32" rx="16" fill="rgba(255,59,48,0.2)" stroke="#ff3b30" stroke-width="1"/>
+  <text x="140" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#ff6b63">🔴 문제 해결 02</text>
+
+  <text x="600" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="900" fill="white">스탬프 투어, 준비부터 인증까지 너무 불편합니다</text>
+  <text x="600" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.5)">스마트폰 하나로 24시간, 전국 어디서나 자동 인증 — Voyna GPS</text>
+
+  <!-- User journey comparison: 4 steps each -->
+  <!-- OLD JOURNEY -->
+  <rect x="50" y="158" width="500" height="42" rx="10" fill="rgba(255,59,48,0.15)"/>
+  <text x="300" y="184" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="800" fill="#ff6b63">😰 기존 스탬프 투어 여정</text>
+
+  <!-- Step boxes OLD -->
+  <rect x="50" y="212" width="106" height="130" rx="14" fill="rgba(255,59,48,0.08)" stroke="rgba(255,59,48,0.25)" stroke-width="1"/>
+  <text x="103" y="255" text-anchor="middle" font-size="30">📋</text>
+  <text x="103" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="white">사전 조사</text>
+  <text x="103" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">어떤 투어가</text>
+  <text x="103" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">있는지 검색</text>
+  <text x="103" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#ff3b30">😤</text>
+
+  <text x="168" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.2)">→</text>
+
+  <rect x="178" y="212" width="106" height="130" rx="14" fill="rgba(255,59,48,0.08)" stroke="rgba(255,59,48,0.25)" stroke-width="1"/>
+  <text x="231" y="255" text-anchor="middle" font-size="30">📕</text>
+  <text x="231" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="white">스탬프북 구입</text>
+  <text x="231" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">별도 구입 또는</text>
+  <text x="231" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">현장 수령 필요</text>
+  <text x="231" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#ff3b30">😤</text>
+
+  <text x="296" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.2)">→</text>
+
+  <rect x="306" y="212" width="106" height="130" rx="14" fill="rgba(255,59,48,0.08)" stroke="rgba(255,59,48,0.25)" stroke-width="1"/>
+  <text x="359" y="255" text-anchor="middle" font-size="30">⏰</text>
+  <text x="359" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="white">운영시간 확인</text>
+  <text x="359" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">09~18시만 가능</text>
+  <text x="359" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">문 닫으면 허탕</text>
+  <text x="359" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#ff3b30">😡</text>
+
+  <text x="424" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.2)">→</text>
+
+  <rect x="434" y="212" width="106" height="130" rx="14" fill="rgba(255,59,48,0.08)" stroke="rgba(255,59,48,0.25)" stroke-width="1"/>
+  <text x="487" y="255" text-anchor="middle" font-size="30">😢</text>
+  <text x="487" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="white">결과</text>
+  <text x="487" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">종이 한 장</text>
+  <text x="487" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">분실하면 끝</text>
+  <text x="487" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#ff3b30">😭</text>
+
+  <!-- Pain detail cards -->
+  <rect x="50" y="360" width="230" height="80" rx="12" fill="rgba(255,59,48,0.08)" stroke="rgba(255,59,48,0.2)" stroke-width="1"/>
+  <text x="165" y="386" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#ff3b30">✕</text>
+  <text x="165" y="406" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="white">기간 한정 이벤트</text>
+  <text x="165" y="424" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.4)">투어 없는 곳은 참여 불가</text>
+
+  <rect x="295" y="360" width="230" height="80" rx="12" fill="rgba(255,59,48,0.08)" stroke="rgba(255,59,48,0.2)" stroke-width="1"/>
+  <text x="410" y="386" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#ff3b30">✕</text>
+  <text x="410" y="406" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="white">전국 공통 앱 없음</text>
+  <text x="410" y="424" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.4)">지자체마다 별도 운영·파편화</text>
+
+  <rect x="50" y="455" width="475" height="80" rx="12" fill="rgba(255,59,48,0.08)" stroke="rgba(255,59,48,0.2)" stroke-width="1"/>
+  <text x="290" y="481" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="white">😰 실제 사용자 불만</text>
+  <text x="290" y="503" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.45)">"스탬프북 챙기는 걸 깜빡해서 못 받은 적이 한두 번이 아니에요"</text>
+  <text x="290" y="522" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.45)">"문이 닫혀있어서 그냥 사진만 찍고 왔어요"</text>
+
+  <!-- Arrow -->
+  <text x="578" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="50" fill="url(#blueg)">→</text>
+
+  <!-- NEW JOURNEY -->
+  <rect x="650" y="158" width="500" height="42" rx="10" fill="rgba(52,199,89,0.15)"/>
+  <text x="900" y="184" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="800" fill="#34c759">✅ Voyna GPS 인증 여정</text>
+
+  <rect x="650" y="212" width="106" height="130" rx="14" fill="rgba(52,199,89,0.08)" stroke="rgba(52,199,89,0.25)" stroke-width="1"/>
+  <text x="703" y="255" text-anchor="middle" font-size="30">📱</text>
+  <text x="703" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="white">앱 설치</text>
+  <text x="703" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">카카오/구글</text>
+  <text x="703" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">간편 로그인</text>
+  <text x="703" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#34c759">😊</text>
+
+  <text x="768" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.2)">→</text>
+
+  <rect x="778" y="212" width="106" height="130" rx="14" fill="rgba(52,199,89,0.08)" stroke="rgba(52,199,89,0.25)" stroke-width="1"/>
+  <text x="831" y="255" text-anchor="middle" font-size="30">📍</text>
+  <text x="831" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="white">여행 모드 ON</text>
+  <text x="831" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">버튼 하나로</text>
+  <text x="831" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">GPS 활성화</text>
+  <text x="831" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#34c759">🎯</text>
+
+  <text x="896" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.2)">→</text>
+
+  <rect x="906" y="212" width="106" height="130" rx="14" fill="rgba(52,199,89,0.08)" stroke="rgba(52,199,89,0.25)" stroke-width="1"/>
+  <text x="959" y="255" text-anchor="middle" font-size="30">🚶</text>
+  <text x="959" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="white">명소 도착</text>
+  <text x="959" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">50~200m 반경</text>
+  <text x="959" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">자동 감지</text>
+  <text x="959" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#34c759">🗺️</text>
+
+  <text x="1024" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" fill="rgba(255,255,255,0.2)">→</text>
+
+  <rect x="1034" y="212" width="106" height="130" rx="14" fill="rgba(255,214,10,0.1)" stroke="rgba(255,214,10,0.4)" stroke-width="1.5"/>
+  <text x="1087" y="255" text-anchor="middle" font-size="30">🏅</text>
+  <text x="1087" y="280" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="white">배지 자동 획득!</text>
+  <text x="1087" y="295" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">XP 적립</text>
+  <text x="1087" y="308" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">레벨업</text>
+  <text x="1087" y="328" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#ffd60a">🎉</text>
+
+  <!-- Benefit cards -->
+  <rect x="650" y="360" width="230" height="80" rx="12" fill="rgba(52,199,89,0.08)" stroke="rgba(52,199,89,0.2)" stroke-width="1"/>
+  <text x="765" y="386" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#34c759">✓</text>
+  <text x="765" y="406" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="white">24시간 365일</text>
+  <text x="765" y="424" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.4)">운영시간 무관 자동 인증</text>
+
+  <rect x="895" y="360" width="230" height="80" rx="12" fill="rgba(52,199,89,0.08)" stroke="rgba(52,199,89,0.2)" stroke-width="1"/>
+  <text x="1010" y="386" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" fill="#34c759">✓</text>
+  <text x="1010" y="406" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="white">전국 수천 개 명소</text>
+  <text x="1010" y="424" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.4)">이벤트 없어도 상시 참여 가능</text>
+
+  <rect x="650" y="455" width="475" height="80" rx="12" fill="rgba(0,113,227,0.08)" stroke="rgba(0,113,227,0.2)" stroke-width="1"/>
+  <text x="890" y="481" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="white">📱 스마트폰만 있으면 끝</text>
+  <text x="890" y="503" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.45)">별도 준비물 없음 · 분실 걱정 없음 · 앱 하나로 전국 통합</text>
+  <text x="890" y="522" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.45)">FlutterFlow + 카카오맵 API + Supabase 클라우드 저장</text>
+
+  <!-- Bottom -->
+  <rect x="50" y="558" width="1100" height="82" rx="16" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.3)" stroke-width="1.5"/>
+  <rect x="50" y="558" width="1100" height="4" rx="2" fill="url(#blueg)"/>
+  <text x="400" y="598" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">기존 방식</text>
+  <text x="400" y="622" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="800" fill="#ff6b63">준비 → 이동 → 대기 → 도장 → 분실 위험</text>
+  <text x="740" y="610" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="url(#blueg)">VS</text>
+  <text x="970" y="598" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">Voyna</text>
+  <text x="970" y="622" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="800" fill="#34c759">도착 → 자동 인증 완료 🎉</text>
+</svg>

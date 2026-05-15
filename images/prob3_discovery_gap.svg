@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/><stop offset="100%" style="stop-color:#0d1b3e"/>
+    </linearGradient>
+    <linearGradient id="blueg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0071e3"/><stop offset="100%" style="stop-color:#34c759"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <g opacity="0.04" stroke="white" stroke-width="1">
+    <line x1="0" y1="135" x2="1200" y2="135"/><line x1="0" y1="270" x2="1200" y2="270"/>
+    <line x1="0" y1="405" x2="1200" y2="405"/><line x1="0" y1="540" x2="1200" y2="540"/>
+    <line x1="300" y1="0" x2="300" y2="675"/><line x1="600" y1="0" x2="600" y2="675"/><line x1="900" y1="0" x2="900" y2="675"/>
+  </g>
+
+  <rect x="40" y="30" width="200" height="32" rx="16" fill="rgba(255,59,48,0.2)" stroke="#ff3b30" stroke-width="1"/>
+  <text x="140" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#ff6b63">🔴 문제 해결 03</text>
+
+  <text x="600" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="34" font-weight="900" fill="white">다음 여행지, 어디를 가야 할지 모르겠습니다</text>
+  <text x="600" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.5)">미수집 배지가 자연스럽게 새로운 여행지로 유도하는 선순환 구조</text>
+
+  <!-- LEFT: Problem -->
+  <rect x="50" y="158" width="490" height="390" rx="20" fill="rgba(255,59,48,0.05)" stroke="rgba(255,59,48,0.25)" stroke-width="1.5"/>
+  <rect x="50" y="158" width="490" height="4" rx="2" fill="#ff3b30"/>
+  <text x="295" y="193" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="800" fill="#ff6b63">😩 기존 여행 계획의 현실</text>
+
+  <!-- Search struggle illustration -->
+  <rect x="80" y="210" width="430" height="80" rx="12" fill="rgba(255,255,255,0.05)"/>
+  <text x="110" y="240" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.3)">🔍</text>
+  <text x="135" y="238" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.2)">"서울 여행 명소 추천"</text>
+  <rect x="80" y="238" width="210" height="1" fill="rgba(255,255,255,0.1)"/>
+  <text x="110" y="263" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.2)">검색 결과 2,340,000건…</text>
+  <text x="360" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#ff3b30">😵</text>
+  <text x="450" y="255" text-anchor="middle" font-family="Arial, sans-serif" font-size="24">🤯</text>
+
+  <!-- Pain boxes -->
+  <rect x="80" y="305" width="200" height="90" rx="12" fill="rgba(255,59,48,0.1)"/>
+  <text x="180" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="26">📋</text>
+  <text x="180" y="356" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="white">정보 과부하</text>
+  <text x="180" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">블로그·유튜브·인스타</text>
+  <text x="180" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">정보가 너무 많아 혼란</text>
+
+  <rect x="300" y="305" width="200" height="90" rx="12" fill="rgba(255,59,48,0.1)"/>
+  <text x="400" y="332" text-anchor="middle" font-family="Arial, sans-serif" font-size="26">🗺️</text>
+  <text x="400" y="356" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="white">숨은 명소 발견 어려움</text>
+  <text x="400" y="372" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">유명 관광지만 반복 방문</text>
+  <text x="400" y="385" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">숨겨진 명소는 모름</text>
+
+  <rect x="80" y="410" width="200" height="90" rx="12" fill="rgba(255,59,48,0.1)"/>
+  <text x="180" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="26">😴</text>
+  <text x="180" y="461" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="white">재방문 동기 부족</text>
+  <text x="180" y="477" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">한 번 간 곳은 다시</text>
+  <text x="180" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">가고 싶지 않다는 느낌</text>
+
+  <rect x="300" y="410" width="200" height="90" rx="12" fill="rgba(255,59,48,0.1)"/>
+  <text x="400" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="26">💸</text>
+  <text x="400" y="461" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="white">계획 수립 비용 높음</text>
+  <text x="400" y="477" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">여행 계획만 1~2시간</text>
+  <text x="400" y="490" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">소요되는 시간 낭비</text>
+
+  <!-- Arrow -->
+  <text x="567" y="370" text-anchor="middle" font-family="Arial, sans-serif" font-size="50" fill="url(#blueg)">→</text>
+
+  <!-- RIGHT: Solution -->
+  <rect x="660" y="158" width="490" height="390" rx="20" fill="rgba(52,199,89,0.05)" stroke="rgba(52,199,89,0.25)" stroke-width="1.5"/>
+  <rect x="660" y="158" width="490" height="4" rx="2" fill="#34c759"/>
+  <text x="905" y="193" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" font-weight="800" fill="#34c759">✨ Voyna 배지 추천 시스템</text>
+
+  <!-- Map-style visualization with locked/unlocked badges -->
+  <rect x="690" y="210" width="430" height="140" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+  <!-- Map dots -->
+  <circle cx="750" cy="270" r="4" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="800" cy="250" r="4" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="860" cy="280" r="4" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="920" cy="255" r="4" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="980" cy="270" r="4" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1050" cy="260" r="4" fill="rgba(255,255,255,0.1)"/>
+  <!-- Roads -->
+  <line x1="700" y1="280" x2="1100" y2="280" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+  <line x1="850" y1="215" x2="850" y2="345" stroke="rgba(255,255,255,0.06)" stroke-width="6"/>
+  <!-- Unlocked badges -->
+  <circle cx="760" cy="260" r="18" fill="rgba(52,199,89,0.2)" stroke="#34c759" stroke-width="1.5"/>
+  <text x="760" y="267" text-anchor="middle" font-size="16">🏯</text>
+  <circle cx="920" cy="255" r="18" fill="rgba(52,199,89,0.2)" stroke="#34c759" stroke-width="1.5"/>
+  <text x="920" y="262" text-anchor="middle" font-size="16">🌸</text>
+  <!-- Locked badges with glow -->
+  <circle cx="840" cy="300" r="22" fill="rgba(255,214,10,0.15)" stroke="#ffd60a" stroke-width="2"/>
+  <text x="840" y="307" text-anchor="middle" font-size="18">🔒</text>
+  <text x="840" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#ffd60a" font-weight="700">150m</text>
+  <circle cx="1040" cy="270" r="22" fill="rgba(0,113,227,0.15)" stroke="#0071e3" stroke-width="2"/>
+  <text x="1040" y="277" text-anchor="middle" font-size="18">🔒</text>
+  <text x="1040" y="292" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" fill="#4aabff" font-weight="700">320m</text>
+  <text x="905" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.3)">🟢 획득 완료   🔒 미수집 배지 (방문 유도)</text>
+
+  <!-- 4 recommendation types -->
+  <rect x="690" y="363" width="200" height="80" rx="12" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.2)" stroke-width="1"/>
+  <text x="790" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="20">📍</text>
+  <text x="790" y="408" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="white">근접 추천</text>
+  <text x="790" y="424" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">현재 위치 기준 가장 가까운</text>
+  <text x="790" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">미수집 배지 자동 안내</text>
+
+  <rect x="907" y="363" width="200" height="80" rx="12" fill="rgba(175,82,222,0.1)" stroke="rgba(175,82,222,0.2)" stroke-width="1"/>
+  <text x="1007" y="388" text-anchor="middle" font-family="Arial, sans-serif" font-size="20">⭐</text>
+  <text x="1007" y="408" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="white">희소성 추천</text>
+  <text x="1007" y="424" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">획득자 적은 희귀 배지</text>
+  <text x="1007" y="437" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">소장 가치 강조 노출</text>
+
+  <rect x="690" y="455" width="200" height="80" rx="12" fill="rgba(255,159,10,0.1)" stroke="rgba(255,159,10,0.2)" stroke-width="1"/>
+  <text x="790" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="20">🔗</text>
+  <text x="790" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="white">연계 추천</text>
+  <text x="790" y="516" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">이미 간 곳과 연결된</text>
+  <text x="790" y="529" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">주변 명소 코스 추천</text>
+
+  <rect x="907" y="455" width="200" height="80" rx="12" fill="rgba(52,199,89,0.1)" stroke="rgba(52,199,89,0.2)" stroke-width="1"/>
+  <text x="1007" y="480" text-anchor="middle" font-family="Arial, sans-serif" font-size="20">🌸</text>
+  <text x="1007" y="500" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="white">시즌 추천</text>
+  <text x="1007" y="516" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">봄 벚꽃, 가을 단풍 등</text>
+  <text x="1007" y="529" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="rgba(255,255,255,0.4)">시즌 한정 배지 노출</text>
+
+  <!-- Bottom -->
+  <rect x="50" y="568" width="1100" height="82" rx="16" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.3)" stroke-width="1.5"/>
+  <rect x="50" y="568" width="1100" height="4" rx="2" fill="url(#blueg)"/>
+  <text x="600" y="604" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="rgba(255,255,255,0.45)">🔄 Voyna의 선순환 구조</text>
+  <text x="600" y="630" text-anchor="middle" font-family="Arial, sans-serif" font-size="19" font-weight="800" fill="white">배지 수집 → 미수집 배지 발견 → 새 여행지 방문 → 더 많은 배지 → 반복</text>
+</svg>

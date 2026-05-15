@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/><stop offset="100%" style="stop-color:#0d1b3e"/>
+    </linearGradient>
+    <linearGradient id="bar1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0071e3"/><stop offset="100%" style="stop-color:#5856d6"/>
+    </linearGradient>
+    <linearGradient id="bar2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#34c759"/><stop offset="100%" style="stop-color:#30d158"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <g opacity="0.04" stroke="white" stroke-width="1">
+    <line x1="0" y1="135" x2="1200" y2="135"/><line x1="0" y1="270" x2="1200" y2="270"/>
+    <line x1="0" y1="405" x2="1200" y2="405"/><line x1="0" y1="540" x2="1200" y2="540"/>
+    <line x1="300" y1="0" x2="300" y2="675"/><line x1="600" y1="0" x2="600" y2="675"/>
+    <line x1="900" y1="0" x2="900" y2="675"/>
+  </g>
+
+  <rect x="40" y="30" width="220" height="32" rx="16" fill="rgba(0,113,227,0.2)" stroke="#0071e3" stroke-width="1"/>
+  <text x="150" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#4aabff">💡 아이디어 배경 — 시장 트렌드</text>
+
+  <text x="600" y="98" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" font-weight="900" fill="white">국내 여행 & 인증 문화, 지금이 적기입니다</text>
+  <text x="600" y="132" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.5)">세 가지 거대한 흐름이 Voyna의 등장을 가리키고 있습니다</text>
+
+  <!-- Stat cards row -->
+  <rect x="50" y="158" width="340" height="110" rx="16" fill="rgba(0,113,227,0.1)" stroke="rgba(0,113,227,0.3)" stroke-width="1.5"/>
+  <text x="230" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" font-weight="900" fill="#4aabff">연 3억+</text>
+  <text x="230" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">국내 연간 여행 횟수</text>
+  <text x="230" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.35)">(한국관광공사, 2023)</text>
+
+  <rect x="430" y="158" width="340" height="110" rx="16" fill="rgba(52,199,89,0.1)" stroke="rgba(52,199,89,0.3)" stroke-width="1.5"/>
+  <text x="600" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" font-weight="900" fill="#34c759">87%</text>
+  <text x="600" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">MZ세대 여행 후 SNS 인증 경험</text>
+  <text x="600" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.35)">(대한상공회의소, 2023)</text>
+
+  <rect x="810" y="158" width="340" height="110" rx="16" fill="rgba(255,214,10,0.1)" stroke="rgba(255,214,10,0.3)" stroke-width="1.5"/>
+  <text x="980" y="195" text-anchor="middle" font-family="Arial, sans-serif" font-size="38" font-weight="900" fill="#ffd60a">400만+</text>
+  <text x="980" y="220" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">지자체 스탬프 투어 연간 참여자</text>
+  <text x="980" y="250" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.35)">(문화체육관광부, 2023)</text>
+
+  <!-- Bar chart: 국내 여행 성장 -->
+  <rect x="50" y="290" width="520" height="270" rx="16" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="310" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="white">📈 국내 여행 횟수 성장 추이 (억 회)</text>
+
+  <!-- Y axis labels -->
+  <text x="78" y="510" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.3)">0</text>
+  <text x="78" y="460" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.3)">1</text>
+  <text x="78" y="410" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.3)">2</text>
+  <text x="78" y="360" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.3)">3</text>
+  <line x1="95" y1="330" x2="95" y2="510" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+  <line x1="95" y1="510" x2="550" y2="510" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+  <!-- Bars -->
+  <rect x="115" y="430" width="55" height="80" rx="6" fill="url(#bar1)" opacity="0.6"/>
+  <text x="142" y="525" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.4)">2020</text>
+  <rect x="195" y="400" width="55" height="110" rx="6" fill="url(#bar1)" opacity="0.7"/>
+  <text x="222" y="525" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.4)">2021</text>
+  <rect x="275" y="370" width="55" height="140" rx="6" fill="url(#bar1)" opacity="0.85"/>
+  <text x="302" y="525" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.4)">2022</text>
+  <rect x="355" y="345" width="55" height="165" rx="6" fill="url(#bar1)"/>
+  <text x="382" y="525" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.4)">2023</text>
+  <rect x="435" y="333" width="55" height="177" rx="6" fill="url(#bar2)"/>
+  <text x="462" y="340" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" fill="#34c759">▲예측</text>
+  <text x="462" y="525" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="rgba(255,255,255,0.4)">2025</text>
+
+  <!-- Trend cards RIGHT -->
+  <rect x="630" y="290" width="520" height="270" rx="16" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="890" y="318" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" font-weight="700" fill="white">🔥 세 가지 핵심 트렌드</text>
+
+  <rect x="655" y="330" width="470" height="68" rx="12" fill="rgba(0,113,227,0.1)"/>
+  <text x="680" y="358" font-family="Arial, sans-serif" font-size="24">📱</text>
+  <text x="720" y="355" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="white">인증 문화의 디지털화</text>
+  <text x="720" y="375" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.45)">SNS 체크인·스탬프 투어가 일상화. 디지털 전환 수요 폭발</text>
+
+  <rect x="655" y="410" width="470" height="68" rx="12" fill="rgba(52,199,89,0.1)"/>
+  <text x="680" y="438" font-family="Arial, sans-serif" font-size="24">🌍</text>
+  <text x="720" y="435" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="white">K-컬처 열풍 & 인바운드 급증</text>
+  <text x="720" y="455" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.45)">외국인 관광객 코로나 이후 빠른 회복, 한국 명소 관심 급증</text>
+
+  <rect x="655" y="490" width="470" height="68" rx="12" fill="rgba(255,159,10,0.1)"/>
+  <text x="680" y="518" font-family="Arial, sans-serif" font-size="24">🎮</text>
+  <text x="720" y="515" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="white">게이미피케이션 소비 증가</text>
+  <text x="720" y="535" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.45)">포인트·배지·레벨로 일상을 게임화하는 앱 소비 지속 성장</text>
+
+  <!-- Bottom -->
+  <rect x="50" y="580" width="1100" height="68" rx="16" fill="rgba(0,113,227,0.12)" stroke="rgba(0,113,227,0.35)" stroke-width="1.5"/>
+  <text x="600" y="607" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.45)">🚀 Voyna의 기회</text>
+  <text x="600" y="632" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="800" fill="white">세 트렌드가 교차하는 지점 — 여행 게임화 앱의 공백을 Voyna가 채웁니다</text>
+</svg>

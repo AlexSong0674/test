@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e1a"/>
+      <stop offset="100%" style="stop-color:#0d1b3e"/>
+    </linearGradient>
+    <linearGradient id="card1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a2a10"/>
+      <stop offset="100%" style="stop-color:#0f1f08"/>
+    </linearGradient>
+    <linearGradient id="card2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1030"/>
+      <stop offset="100%" style="stop-color:#0f0820"/>
+    </linearGradient>
+    <linearGradient id="card3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2a1a00"/>
+      <stop offset="100%" style="stop-color:#1a0f00"/>
+    </linearGradient>
+    <linearGradient id="arrow" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0071e3"/>
+      <stop offset="100%" style="stop-color:#34c759"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="675" fill="url(#bg)"/>
+
+  <!-- Subtle grid -->
+  <g opacity="0.04" stroke="white" stroke-width="1">
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="0" y1="500" x2="1200" y2="500"/>
+    <line x1="0" y1="600" x2="1200" y2="600"/>
+    <line x1="200" y1="0" x2="200" y2="675"/>
+    <line x1="400" y1="0" x2="400" y2="675"/>
+    <line x1="600" y1="0" x2="600" y2="675"/>
+    <line x1="800" y1="0" x2="800" y2="675"/>
+    <line x1="1000" y1="0" x2="1000" y2="675"/>
+  </g>
+
+  <!-- Top label -->
+  <rect x="40" y="30" width="220" height="32" rx="16" fill="rgba(0,113,227,0.2)" stroke="#0071e3" stroke-width="1"/>
+  <text x="150" y="51" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" font-weight="700" fill="#4aabff">💡 아이디어 배경 — 검증된 사례</text>
+
+  <!-- Main Title -->
+  <text x="600" y="100" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" font-weight="900" fill="white">GPS + 수집 게임화, 이미 검증된 메커니즘</text>
+  <text x="600" y="135" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="rgba(255,255,255,0.5)">세 가지 성공 사례가 증명한 '탐험 + 수집'의 힘 — Voyna는 여행 전체로 확장합니다</text>
+
+  <!-- CARD 1: 포켓몬GO -->
+  <rect x="60" y="165" width="320" height="330" rx="20" fill="url(#card1)" stroke="rgba(52,199,89,0.3)" stroke-width="1.5"/>
+  <rect x="60" y="165" width="320" height="4" rx="2" fill="#34c759"/>
+  <!-- Icon circle -->
+  <circle cx="220" cy="230" r="45" fill="rgba(52,199,89,0.15)" stroke="rgba(52,199,89,0.4)" stroke-width="2"/>
+  <text x="220" y="246" text-anchor="middle" font-size="40">🎮</text>
+  <text x="220" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="800" fill="white">포켓몬GO</text>
+  <text x="220" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">Niantic · 2016</text>
+
+  <!-- Stats -->
+  <rect x="80" y="340" width="280" height="50" rx="10" fill="rgba(52,199,89,0.1)"/>
+  <text x="220" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#34c759">1억+</text>
+  <text x="220" y="379" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">전 세계 월간 활성 사용자</text>
+
+  <text x="80" y="415" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.7)">✅ GPS + 수집 게임화 글로벌 검증</text>
+  <text x="80" y="437" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">⚠️ 가상 캐릭터 수집 (실제 여행지 ✗)</text>
+  <text x="80" y="459" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">⚠️ 여행 기록·추억 기능 없음</text>
+
+  <!-- CARD 2: 대항해시대 -->
+  <rect x="440" y="165" width="320" height="330" rx="20" fill="url(#card2)" stroke="rgba(175,82,222,0.3)" stroke-width="1.5"/>
+  <rect x="440" y="165" width="320" height="4" rx="2" fill="#af52de"/>
+  <circle cx="600" cy="230" r="45" fill="rgba(175,82,222,0.15)" stroke="rgba(175,82,222,0.4)" stroke-width="2"/>
+  <text x="600" y="246" text-anchor="middle" font-size="40">⛵</text>
+  <text x="600" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="800" fill="white">대항해시대 오리진</text>
+  <text x="600" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">Netmarble · 탐험 RPG</text>
+
+  <rect x="460" y="340" width="280" height="50" rx="10" fill="rgba(175,82,222,0.1)"/>
+  <text x="600" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#af52de">150만+</text>
+  <text x="600" y="379" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">국내 사전예약자 (출시 전)</text>
+
+  <text x="460" y="415" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.7)">✅ 탐험 + 수집 RPG 높은 몰입도</text>
+  <text x="460" y="437" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.7)">✅ 발견의 재미 → 강력한 동기 부여</text>
+  <text x="460" y="459" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">⚠️ 가상 세계 한정 (현실 여행 ✗)</text>
+
+  <!-- CARD 3: 트랭글 -->
+  <rect x="820" y="165" width="320" height="330" rx="20" fill="url(#card3)" stroke="rgba(255,159,10,0.3)" stroke-width="1.5"/>
+  <rect x="820" y="165" width="320" height="4" rx="2" fill="#ff9f0a"/>
+  <circle cx="980" cy="230" r="45" fill="rgba(255,159,10,0.15)" stroke="rgba(255,159,10,0.4)" stroke-width="2"/>
+  <text x="980" y="246" text-anchor="middle" font-size="40">🏔️</text>
+  <text x="980" y="300" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="800" fill="white">트랭글</text>
+  <text x="980" y="322" text-anchor="middle" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.5)">한국 등산 GPS 인증 앱</text>
+
+  <rect x="840" y="340" width="280" height="50" rx="10" fill="rgba(255,159,10,0.1)"/>
+  <text x="980" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#ff9f0a">400만+</text>
+  <text x="980" y="379" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="rgba(255,255,255,0.5)">국내 누적 다운로드</text>
+
+  <text x="840" y="415" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.7)">✅ GPS 인증이 국내에서도 통함</text>
+  <text x="840" y="437" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.7)">✅ 방문 기록 수집 → 강한 리텐션</text>
+  <text x="840" y="459" font-family="Arial, sans-serif" font-size="13" fill="rgba(255,255,255,0.4)">⚠️ 등산·트레킹만 특화 (일반 여행 ✗)</text>
+
+  <!-- Bottom: Voyna synthesis -->
+  <rect x="60" y="520" width="1080" height="110" rx="20" fill="rgba(0,113,227,0.12)" stroke="rgba(0,113,227,0.4)" stroke-width="1.5"/>
+  <!-- Gradient bar -->
+  <rect x="60" y="520" width="1080" height="4" rx="2" fill="url(#arrow)"/>
+
+  <text x="600" y="556" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#4aabff">🚀 Voyna의 포지셔닝</text>
+  <text x="600" y="584" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="white">세 사례의 핵심만 결합 → 일상 여행 전체를 게임으로</text>
+  <text x="600" y="612" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="rgba(255,255,255,0.55)">GPS 인증(트랭글) + 수집·성취감(포켓몬GO) + 탐험의 재미(대항해시대) = Voyna</text>
+</svg>

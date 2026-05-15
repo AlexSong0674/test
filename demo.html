@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voyna 앱 데모 — GPS 여행 배지 앱</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #0071e3; --blue-dark: #0051a8; --blue-light: #e8f4fd;
+      --green: #34c759; --orange: #ff9f0a; --purple: #af52de; --gold: #ffd60a;
+      --gray-100: #f5f5f7; --gray-200: #e5e5e7; --gray-500: #86868b; --gray-900: #1d1d1f;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(160deg, #0a0a1a 0%, #0d1b3e 50%, #0a1628 100%);
+      min-height: 100vh; color: white; overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    header {
+      text-align: center; padding: 3rem 1rem 1.5rem;
+    }
+    .logo { font-size: 2rem; font-weight: 900; color: white; margin-bottom: 0.5rem; }
+    .logo span { color: var(--blue); }
+    .tagline { color: rgba(255,255,255,0.55); font-size: 0.95rem; }
+
+    /* ── MAIN DEMO AREA ── */
+    .demo-area {
+      display: flex; align-items: flex-start; justify-content: center;
+      gap: 4rem; padding: 2rem 5% 3rem;
+      max-width: 1100px; margin: 0 auto;
+      flex-wrap: wrap;
+    }
+
+    /* ── PHONE FRAME ── */
+    .phone-wrap { position: relative; flex-shrink: 0; }
+    .phone {
+      width: 280px; height: 560px;
+      background: #111; border-radius: 44px;
+      border: 8px solid #2a2a2a;
+      box-shadow: 0 0 0 1px #444, 0 40px 80px rgba(0,0,0,0.6), inset 0 0 0 1px #333;
+      position: relative; overflow: hidden;
+    }
+    .phone-notch {
+      position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 100px; height: 24px; background: #111; border-radius: 0 0 16px 16px; z-index: 10;
+    }
+    .phone-screen {
+      width: 100%; height: 100%; position: relative; overflow: hidden;
+    }
+
+    /* ── SCREENS ── */
+    .screen {
+      position: absolute; inset: 0;
+      opacity: 0; transform: translateX(40px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
+    .screen.active {
+      opacity: 1; transform: translateX(0); pointer-events: auto;
+    }
+    .screen.exit {
+      opacity: 0; transform: translateX(-40px);
+    }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 30px 16px 8px; font-size: 11px; color: white; font-weight: 600;
+    }
+
+    /* ── SCREEN 1: 홈 ── */
+    .s1 { background: linear-gradient(180deg, #0a1628 0%, #0d1f3c 100%); }
+    .s1-header { padding: 0 16px 12px; }
+    .s1-greeting { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 2px; }
+    .s1-name { font-size: 18px; font-weight: 700; }
+    .s1-card {
+      margin: 0 12px 12px;
+      background: linear-gradient(135deg, #0071e3, #5856d6);
+      border-radius: 20px; padding: 16px;
+    }
+    .s1-level-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .s1-level { font-size: 11px; color: rgba(255,255,255,0.7); }
+    .s1-level strong { font-size: 22px; color: white; display: block; }
+    .s1-title-badge {
+      background: rgba(255,255,255,0.2); border-radius: 20px;
+      padding: 4px 10px; font-size: 11px; font-weight: 600;
+    }
+    .s1-xp-bar { background: rgba(255,255,255,0.2); border-radius: 99px; height: 5px; margin-bottom: 6px; }
+    .s1-xp-fill { background: white; border-radius: 99px; height: 5px; width: 62%; }
+    .s1-xp-label { font-size: 10px; color: rgba(255,255,255,0.6); }
+    .s1-section { padding: 0 16px; margin-bottom: 12px; }
+    .s1-section-title { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
+    .s1-badges { display: flex; gap: 8px; }
+    .s1-badge {
+      flex: 1; border-radius: 14px; padding: 10px 8px; text-align: center;
+      font-size: 22px; background: rgba(255,255,255,0.07);
+    }
+    .s1-badge span { display: block; font-size: 9px; color: rgba(255,255,255,0.6); margin-top: 4px; }
+    .s1-travel-btn {
+      margin: 0 12px;
+      background: var(--green); color: white;
+      border-radius: 16px; padding: 14px; text-align: center;
+      font-weight: 700; font-size: 15px;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    /* ── SCREEN 2: 지도 ── */
+    .s2 { background: #1a2a1a; }
+    .s2-map {
+      flex: 1; position: relative; overflow: hidden;
+      background:
+        linear-gradient(rgba(26,42,26,0.3), rgba(26,42,26,0.3)),
+        repeating-linear-gradient(0deg, transparent, transparent 30px, rgba(255,255,255,0.03) 30px, rgba(255,255,255,0.03) 31px),
+        repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(255,255,255,0.03) 30px, rgba(255,255,255,0.03) 31px);
+      height: 360px;
+    }
+    .map-road-h {
+      position: absolute; height: 8px; background: rgba(255,255,255,0.12);
+      border-radius: 4px;
+    }
+    .map-road-v {
+      position: absolute; width: 8px; background: rgba(255,255,255,0.12);
+      border-radius: 4px;
+    }
+    .map-label {
+      position: absolute; background: rgba(0,0,0,0.6); border-radius: 6px;
+      padding: 2px 6px; font-size: 9px; color: rgba(255,255,255,0.6);
+      white-space: nowrap;
+    }
+    .my-location {
+      position: absolute; width: 18px; height: 18px;
+      background: var(--blue); border: 3px solid white;
+      border-radius: 50%; box-shadow: 0 0 0 8px rgba(0,113,227,0.2);
+      animation: pulse-loc 2s ease infinite;
+    }
+    @keyframes pulse-loc {
+      0%,100% { box-shadow: 0 0 0 8px rgba(0,113,227,0.2); }
+      50% { box-shadow: 0 0 0 14px rgba(0,113,227,0.08); }
+    }
+    .map-pin {
+      position: absolute; text-align: center;
+      animation: float-pin 3s ease-in-out infinite;
+    }
+    .map-pin:nth-child(2) { animation-delay: 0.5s; }
+    .map-pin:nth-child(3) { animation-delay: 1s; }
+    @keyframes float-pin {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+    .pin-icon {
+      width: 36px; height: 36px; border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg); display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .pin-inner { transform: rotate(45deg); font-size: 16px; }
+    .pin-label {
+      font-size: 9px; font-weight: 700; background: rgba(0,0,0,0.7);
+      border-radius: 6px; padding: 2px 5px; margin-top: 4px;
+      white-space: nowrap;
+    }
+    .s2-bottom {
+      background: rgba(0,0,0,0.8); padding: 12px 16px;
+      backdrop-filter: blur(10px);
+    }
+    .s2-nearby-title { font-size: 11px; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+    .s2-nearby-item {
+      display: flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.07); border-radius: 10px;
+      padding: 8px 10px; margin-bottom: 6px;
+    }
+    .s2-nearby-icon { font-size: 20px; }
+    .s2-nearby-name { font-size: 11px; font-weight: 600; }
+    .s2-nearby-dist { font-size: 9px; color: var(--green); }
+    .s2-nearby-grade {
+      margin-left: auto; font-size: 9px; font-weight: 700;
+      padding: 2px 6px; border-radius: 6px;
+    }
+
+    /* ── SCREEN 3: 배지 발견 ── */
+    .s3 {
+      background: radial-gradient(circle at center, #1a2a0a 0%, #0a1a0a 100%);
+      display: flex; flex-direction: column;
+    }
+    .s3-body {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 16px;
+    }
+    .s3-pulse-wrap { position: relative; width: 120px; height: 120px; margin-bottom: 20px; }
+    .s3-pulse {
+      position: absolute; inset: 0; border-radius: 50%;
+      border: 2px solid var(--green); animation: gps-pulse 2s ease infinite;
+    }
+    .s3-pulse:nth-child(2) { animation-delay: 0.6s; }
+    .s3-pulse:nth-child(3) { animation-delay: 1.2s; }
+    @keyframes gps-pulse {
+      0% { transform: scale(0.3); opacity: 1; }
+      100% { transform: scale(1); opacity: 0; }
+    }
+    .s3-center-dot {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+      width: 44px; height: 44px; background: var(--green); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; box-shadow: 0 0 20px rgba(52,199,89,0.5);
+    }
+    .s3-title { font-size: 20px; font-weight: 800; margin-bottom: 8px; text-align: center; }
+    .s3-subtitle { font-size: 13px; color: rgba(255,255,255,0.6); text-align: center; margin-bottom: 20px; }
+    .s3-distance {
+      background: rgba(52,199,89,0.15); border: 1px solid rgba(52,199,89,0.4);
+      border-radius: 12px; padding: 10px 20px; text-align: center;
+    }
+    .s3-dist-num { font-size: 28px; font-weight: 900; color: var(--green); }
+    .s3-dist-label { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+    /* ── SCREEN 4: 배지 획득 ── */
+    .s4 { background: radial-gradient(circle at 50% 40%, #1a1000 0%, #0a0a00 100%); }
+    .s4-body {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 16px; height: 100%;
+    }
+    .s4-badge-wrap { position: relative; margin-bottom: 16px; }
+    .s4-badge-glow {
+      position: absolute; inset: -20px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,214,10,0.3) 0%, transparent 70%);
+      animation: glow-pulse 1.5s ease infinite;
+    }
+    @keyframes glow-pulse {
+      0%,100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; }
+    }
+    .s4-badge-icon {
+      width: 100px; height: 100px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold) 0%, #ff9f0a 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; position: relative; z-index: 1;
+      box-shadow: 0 0 40px rgba(255,214,10,0.4);
+      animation: badge-bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes badge-bounce {
+      0% { transform: scale(0); }
+      100% { transform: scale(1); }
+    }
+    .s4-stars {
+      position: absolute; inset: -40px; pointer-events: none; z-index: 2;
+    }
+    .star {
+      position: absolute; font-size: 16px;
+      animation: star-fly 1.2s ease forwards;
+    }
+    @keyframes star-fly {
+      0% { transform: translate(0,0) scale(0); opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 0; }
+    }
+    .s4-new { font-size: 11px; color: var(--gold); font-weight: 700; letter-spacing: 2px; margin-bottom: 4px; }
+    .s4-name { font-size: 18px; font-weight: 800; margin-bottom: 4px; text-align: center; }
+    .s4-grade {
+      background: rgba(255,214,10,0.15); border: 1px solid rgba(255,214,10,0.4);
+      border-radius: 99px; padding: 3px 12px; font-size: 11px; color: var(--gold); font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .s4-xp {
+      background: rgba(52,199,89,0.15); border: 1px solid rgba(52,199,89,0.3);
+      border-radius: 12px; padding: 10px 24px; text-align: center; margin-bottom: 12px;
+    }
+    .s4-xp-num { font-size: 26px; font-weight: 900; color: var(--green); }
+    .s4-xp-label { font-size: 10px; color: rgba(255,255,255,0.5); }
+    .s4-btn {
+      background: var(--blue); color: white; border-radius: 16px;
+      padding: 12px 32px; font-size: 14px; font-weight: 700; border: none; cursor: pointer;
+      width: 100%;
+    }
+
+    /* ── SCREEN 5: 컬렉션 ── */
+    .s5 { background: #0d0d1a; }
+    .s5-header { padding: 28px 16px 12px; display: flex; justify-content: space-between; align-items: center; }
+    .s5-title { font-size: 18px; font-weight: 800; }
+    .s5-count { font-size: 12px; color: var(--blue); font-weight: 600; }
+    .s5-tabs { display: flex; gap: 6px; padding: 0 16px 10px; }
+    .s5-tab {
+      padding: 5px 12px; border-radius: 99px; font-size: 11px; font-weight: 600;
+      background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6);
+    }
+    .s5-tab.active { background: var(--blue); color: white; }
+    .s5-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 0 14px; }
+    .s5-item {
+      border-radius: 14px; padding: 10px 6px; text-align: center;
+      background: rgba(255,255,255,0.06); position: relative;
+    }
+    .s5-item.new-item::after {
+      content: 'NEW'; position: absolute; top: 5px; right: 5px;
+      background: var(--green); color: white; font-size: 7px; font-weight: 800;
+      border-radius: 4px; padding: 1px 4px;
+    }
+    .s5-emoji { font-size: 24px; margin-bottom: 4px; }
+    .s5-item-name { font-size: 8px; color: rgba(255,255,255,0.7); font-weight: 600; }
+    .s5-item-grade {
+      font-size: 7px; font-weight: 700; border-radius: 99px;
+      padding: 1px 5px; display: inline-block; margin-top: 3px;
+    }
+    .grade-common { background: rgba(134,134,139,0.3); color: #86868b; }
+    .grade-rare { background: rgba(0,113,227,0.2); color: #4aabff; }
+    .grade-special { background: rgba(175,82,222,0.2); color: #bf5af2; }
+    .grade-premier { background: rgba(255,214,10,0.2); color: var(--gold); }
+    .s5-locked { opacity: 0.3; }
+
+    /* ── CONTROLS ── */
+    .controls { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 1.5rem 1rem; }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.25); cursor: pointer;
+      transition: all 0.3s;
+    }
+    .dot.active { background: var(--blue); width: 24px; border-radius: 4px; }
+    .ctrl-btn {
+      background: rgba(255,255,255,0.1); border: none; color: white;
+      width: 40px; height: 40px; border-radius: 50%; font-size: 18px;
+      cursor: pointer; transition: background 0.2s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ctrl-btn:hover { background: rgba(255,255,255,0.2); }
+
+    /* ── SIDE INFO ── */
+    .side-info { flex: 1; min-width: 260px; max-width: 400px; padding-top: 1rem; }
+    .screen-label {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(0,113,227,0.15); border: 1px solid rgba(0,113,227,0.3);
+      border-radius: 99px; padding: 4px 12px; font-size: 11px; color: var(--blue);
+      font-weight: 600; margin-bottom: 1rem;
+    }
+    .step-dot { width: 6px; height: 6px; background: var(--blue); border-radius: 50%; }
+    .screen-title { font-size: 1.6rem; font-weight: 800; line-height: 1.2; margin-bottom: 0.75rem; }
+    .screen-desc { color: rgba(255,255,255,0.55); line-height: 1.7; font-size: 0.9rem; margin-bottom: 1.5rem; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .feature-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      background: rgba(255,255,255,0.05); border-radius: 12px; padding: 12px;
+    }
+    .feature-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .feature-text { font-size: 0.85rem; }
+    .feature-text strong { display: block; color: white; margin-bottom: 2px; }
+    .feature-text span { color: rgba(255,255,255,0.5); font-size: 0.8rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 2rem;
+      color: rgba(255,255,255,0.3); font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    footer a { color: var(--blue); text-decoration: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      .demo-area { gap: 2rem; padding: 1rem; }
+      .phone { width: 240px; height: 480px; }
+      .side-info { min-width: 0; width: 100%; }
+      .screen-title { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🗺️ <span>Voyna</span> (보이나)</div>
+  <p class="tagline">발걸음이 기록이 되고, 기록이 추억이 된다 — 앱 인터랙티브 데모</p>
+</header>
+
+<div class="demo-area">
+
+  <!-- PHONE -->
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="phone-notch"></div>
+      <div class="phone-screen">
+
+        <!-- SCREEN 1: 홈 -->
+        <div class="screen s1 active" id="screen-0">
+          <div class="status-bar"><span>9:41</span><span>●●● 100%</span></div>
+          <div class="s1-header">
+            <div class="s1-greeting">안녕하세요 👋</div>
+            <div class="s1-name">여행자 송하준</div>
+          </div>
+          <div class="s1-card">
+            <div class="s1-level-row">
+              <div class="s1-level">
+                <strong>Lv. 12</strong>
+                현재 레벨
+              </div>
+              <div class="s1-title-badge">🌏 국내 여행러</div>
+            </div>
+            <div class="s1-xp-bar"><div class="s1-xp-fill"></div></div>
+            <div class="s1-xp-label">1,840 / 3,000 XP · 다음 레벨까지 1,160 XP</div>
+          </div>
+          <div class="s1-section">
+            <div class="s1-section-title">최근 획득한 배지 🏅</div>
+            <div class="s1-badges">
+              <div class="s1-badge">🏯<span>경복궁</span></div>
+              <div class="s1-badge">🌊<span>해운대</span></div>
+              <div class="s1-badge">🍊<span>성산일출봉</span></div>
+            </div>
+          </div>
+          <div class="s1-travel-btn">📍 여행 모드 ON</div>
+        </div>
+
+        <!-- SCREEN 2: 지도 -->
+        <div class="screen s2" id="screen-1">
+          <div class="status-bar" style="position:absolute;top:0;left:0;right:0;z-index:5;background:linear-gradient(to bottom,rgba(0,0,0,0.6),transparent);"><span>9:41</span><span>📍 여행 중</span></div>
+          <div class="s2-map">
+            <!-- Roads -->
+            <div class="map-road-h" style="top:40%;left:0;right:0;"></div>
+            <div class="map-road-h" style="top:65%;left:0;right:0;"></div>
+            <div class="map-road-v" style="left:35%;top:0;bottom:0;"></div>
+            <div class="map-road-v" style="left:65%;top:0;bottom:0;"></div>
+            <!-- Labels -->
+            <div class="map-label" style="top:25%;left:10%;">광화문</div>
+            <div class="map-label" style="top:55%;right:8%;">인사동</div>
+            <div class="map-label" style="bottom:25%;left:15%;">청계천</div>
+            <!-- My Location -->
+            <div class="my-location" style="top:42%;left:37%;"></div>
+            <!-- Pins -->
+            <div class="map-pin" style="top:18%;left:28%;">
+              <div class="pin-icon" style="background:linear-gradient(135deg,#ffd60a,#ff9f0a);">
+                <div class="pin-inner">🏯</div>
+              </div>
+              <div class="pin-label" style="color:#ffd60a;">경복궁</div>
+            </div>
+            <div class="map-pin" style="top:30%;right:12%;">
+              <div class="pin-icon" style="background:linear-gradient(135deg,#0071e3,#5856d6);">
+                <div class="pin-inner">🎨</div>
+              </div>
+              <div class="pin-label" style="color:#4aabff;">국립박물관</div>
+            </div>
+            <div class="map-pin" style="bottom:22%;right:18%;">
+              <div class="pin-icon" style="background:linear-gradient(135deg,#34c759,#30d158);">
+                <div class="pin-inner">🌿</div>
+              </div>
+              <div class="pin-label" style="color:#34c759;">창덕궁</div>
+            </div>
+          </div>
+          <div class="s2-bottom">
+            <div class="s2-nearby-title">📍 근처 배지</div>
+            <div class="s2-nearby-item">
+              <div class="s2-nearby-icon">🏯</div>
+              <div>
+                <div class="s2-nearby-name">경복궁</div>
+                <div class="s2-nearby-dist">🟢 82m 앞</div>
+              </div>
+              <div class="s2-nearby-grade" style="background:rgba(255,214,10,0.2);color:#ffd60a;">프리미어</div>
+            </div>
+            <div class="s2-nearby-item">
+              <div class="s2-nearby-icon">🎨</div>
+              <div>
+                <div class="s2-nearby-name">국립중앙박물관</div>
+                <div class="s2-nearby-dist">340m</div>
+              </div>
+              <div class="s2-nearby-grade" style="background:rgba(0,113,227,0.2);color:#4aabff;">희귀</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN 3: GPS 감지 -->
+        <div class="screen s3" id="screen-2">
+          <div class="status-bar"><span>9:41</span><span>🟢 여행 중</span></div>
+          <div class="s3-body">
+            <div class="s3-pulse-wrap">
+              <div class="s3-pulse"></div>
+              <div class="s3-pulse"></div>
+              <div class="s3-pulse"></div>
+              <div class="s3-center-dot">🏯</div>
+            </div>
+            <div class="s3-title">배지 발견!</div>
+            <div class="s3-subtitle">인근 명소를 감지했습니다</div>
+            <div class="s3-distance">
+              <div class="s3-dist-num">82m</div>
+              <div class="s3-dist-label">경복궁까지 남은 거리</div>
+            </div>
+            <div style="margin-top:16px;font-size:12px;color:rgba(255,255,255,0.4);text-align:center;">
+              조금 더 가까이 가면<br>자동으로 배지가 획득됩니다
+            </div>
+          </div>
+        </div>
+
+        <!-- SCREEN 4: 배지 획득! -->
+        <div class="screen s4" id="screen-3">
+          <div class="status-bar"><span>9:41</span><span>🎉</span></div>
+          <div class="s4-body">
+            <div class="s4-new">✨ NEW BADGE</div>
+            <div class="s4-badge-wrap">
+              <div class="s4-badge-glow"></div>
+              <div class="s4-badge-icon">🏯</div>
+              <div class="s4-stars">
+                <div class="star" style="top:50%;left:50%;--tx:-50px;--ty:-55px;animation-delay:0.2s;">⭐</div>
+                <div class="star" style="top:50%;left:50%;--tx:45px;--ty:-50px;animation-delay:0.3s;">✨</div>
+                <div class="star" style="top:50%;left:50%;--tx:-55px;--ty:10px;animation-delay:0.4s;">🌟</div>
+                <div class="star" style="top:50%;left:50%;--tx:50px;--ty:15px;animation-delay:0.5s;">⭐</div>
+                <div class="star" style="top:50%;left:50%;--tx:-10px;--ty:55px;animation-delay:0.35s;">✨</div>
+              </div>
+            </div>
+            <div class="s4-name">경복궁 배지 획득!</div>
+            <div class="s4-grade">👑 프리미어</div>
+            <div class="s4-xp">
+              <div class="s4-xp-num">+500 XP</div>
+              <div class="s4-xp-label">경험치 획득 · 총 2,340 XP</div>
+            </div>
+            <div style="background:rgba(175,82,222,0.15);border:1px solid rgba(175,82,222,0.3);border-radius:12px;padding:10px;text-align:center;margin-bottom:12px;font-size:11px;">
+              🎊 칭호 달성! <strong style="color:#bf5af2;">지도 마니아</strong>
+            </div>
+            <button class="s4-btn">컬렉션 확인하기 →</button>
+          </div>
+        </div>
+
+        <!-- SCREEN 5: 컬렉션 -->
+        <div class="screen s5" id="screen-4">
+          <div class="s5-header">
+            <div class="s5-title">내 배지 컬렉션</div>
+            <div class="s5-count">27 / 350개</div>
+          </div>
+          <div class="s5-tabs">
+            <div class="s5-tab active">전체</div>
+            <div class="s5-tab">서울</div>
+            <div class="s5-tab">제주</div>
+          </div>
+          <div class="s5-grid">
+            <div class="s5-item new-item">
+              <div class="s5-emoji">🏯</div>
+              <div class="s5-item-name">경복궁</div>
+              <div class="s5-item-grade grade-premier">프리미어</div>
+            </div>
+            <div class="s5-item">
+              <div class="s5-emoji">🌊</div>
+              <div class="s5-item-name">해운대</div>
+              <div class="s5-item-grade grade-common">일반</div>
+            </div>
+            <div class="s5-item">
+              <div class="s5-emoji">🍊</div>
+              <div class="s5-item-name">성산일출봉</div>
+              <div class="s5-item-grade grade-rare">희귀</div>
+            </div>
+            <div class="s5-item">
+              <div class="s5-emoji">🎋</div>
+              <div class="s5-item-name">대나무숲</div>
+              <div class="s5-item-grade grade-special">특별</div>
+            </div>
+            <div class="s5-item">
+              <div class="s5-emoji">🌸</div>
+              <div class="s5-item-name">창경궁</div>
+              <div class="s5-item-grade grade-common">일반</div>
+            </div>
+            <div class="s5-item s5-locked">
+              <div class="s5-emoji">🔒</div>
+              <div class="s5-item-name">남산타워</div>
+              <div class="s5-item-grade grade-rare">희귀</div>
+            </div>
+          </div>
+          <div style="text-align:center;margin-top:10px;font-size:10px;color:rgba(255,255,255,0.3);">
+            🗺️ 근처 미수집 배지 4개 있음
+          </div>
+        </div>
+
+      </div><!-- /phone-screen -->
+    </div><!-- /phone -->
+
+    <!-- CONTROLS -->
+    <div class="controls">
+      <button class="ctrl-btn" id="btn-prev">‹</button>
+      <div class="dot active" onclick="goTo(0)"></div>
+      <div class="dot" onclick="goTo(1)"></div>
+      <div class="dot" onclick="goTo(2)"></div>
+      <div class="dot" onclick="goTo(3)"></div>
+      <div class="dot" onclick="goTo(4)"></div>
+      <button class="ctrl-btn" id="btn-next">›</button>
+    </div>
+  </div><!-- /phone-wrap -->
+
+  <!-- SIDE INFO -->
+  <div class="side-info" id="side-info">
+    <!-- Updated by JS -->
+  </div>
+
+</div><!-- /demo-area -->
+
+<footer>
+  <p>© 2026 <strong>Voyna (보이나)</strong> — GPS 기반 게이미피케이션 여행 앱</p>
+  <p style="margin-top:6px;"><a href="https://alexsong0674.github.io/test">← 서비스 소개 페이지로 돌아가기</a></p>
+</footer>
+
+<script>
+  const screens = [
+    {
+      label: "01 / 홈화면",
+      title: "내 여행 대시보드",
+      desc: "앱을 열면 현재 레벨, 칭호, XP 현황과 최근 획득한 배지가 한눈에 보입니다. '여행 모드 ON' 버튼 하나로 GPS 인증이 시작됩니다.",
+      features: [
+        { icon: "🏅", title: "레벨 & 칭호 시스템", text: "Lv.1~99 + 16가지 고유 칭호" },
+        { icon: "📊", title: "XP 진행 표시", text: "다음 레벨까지 남은 경험치 시각화" },
+        { icon: "🗂️", title: "최근 배지 카드", text: "가장 최근 획득한 배지 3개 표시" }
+      ]
+    },
+    {
+      label: "02 / 탐험 맵",
+      title: "주변 배지를 탐색하세요",
+      desc: "카카오맵 기반의 실시간 지도에서 현재 위치와 근처 미수집 배지를 확인합니다. 배지 등급에 따라 핀 색상이 다르게 표시됩니다.",
+      features: [
+        { icon: "📍", title: "GPS 실시간 감지", text: "반경 50~200m 이내 명소 자동 인식" },
+        { icon: "🎨", title: "등급별 핀 색상", text: "일반/희귀/특별/프리미어 한눈에 구분" },
+        { icon: "📋", title: "근처 배지 목록", text: "거리순으로 미수집 배지 안내" }
+      ]
+    },
+    {
+      label: "03 / GPS 감지",
+      title: "명소 접근 알림!",
+      desc: "배지가 있는 명소에 가까워지면 GPS 파동 애니메이션과 함께 알림이 표시됩니다. 조금만 더 걸으면 자동으로 배지가 획득됩니다.",
+      features: [
+        { icon: "🌊", title: "GPS 파동 시각화", text: "실시간 거리 측정을 직관적으로 표현" },
+        { icon: "🔔", title: "스마트 알림", text: "배터리 최적화된 지오펜싱 기술" },
+        { icon: "✅", title: "이원화 획득 방식", text: "일반: 자동 획득 / 희귀·특별: 확인 팝업" }
+      ]
+    },
+    {
+      label: "04 / 배지 획득!",
+      title: "배지 획득 순간의 감동",
+      desc: "명소 도착 즉시 배지 획득 애니메이션이 펼쳐집니다. XP 적립과 함께 칭호 달성, 레벨업 등 다양한 성취 피드백을 제공합니다.",
+      features: [
+        { icon: "🎊", title: "획득 축하 연출", text: "등급별로 다른 특별한 애니메이션" },
+        { icon: "⚡", title: "즉시 XP 적립", text: "일반 +50 / 희귀 +150 / 프리미어 +500 XP" },
+        { icon: "👑", title: "칭호 달성 알림", text: "조건 충족 시 새 칭호 자동 부여" }
+      ]
+    },
+    {
+      label: "05 / 컬렉션",
+      title: "내 여행의 발자취",
+      desc: "지금까지 모은 모든 배지를 지역별·종류별로 확인할 수 있습니다. 잠긴 배지는 미방문 명소를 의미하며, 자연스럽게 다음 여행지를 유도합니다.",
+      features: [
+        { icon: "🗂️", title: "지역·종류별 필터", text: "서울, 부산, 제주 등 지역별 컬렉션 뷰" },
+        { icon: "🔒", title: "미수집 배지 미리보기", text: "잠긴 배지로 다음 여행지 자연스럽게 유도" },
+        { icon: "📅", title: "방문 기록 타임라인", text: "언제 어디서 획득했는지 시간순 기록" }
+      ]
+    }
+  ];
+
+  let current = 0;
+  let autoTimer = null;
+
+  const sideInfo = document.getElementById('side-info');
+  const dots = document.querySelectorAll('.dot');
+
+  function renderSide(idx) {
+    const s = screens[idx];
+    sideInfo.innerHTML = `
+      <div class="screen-label"><div class="step-dot"></div>${s.label}</div>
+      <h2 class="screen-title">${s.title}</h2>
+      <p class="screen-desc">${s.desc}</p>
+      <ul class="feature-list">
+        ${s.features.map(f => `
+          <li class="feature-item">
+            <span class="feature-icon">${f.icon}</span>
+            <div class="feature-text">
+              <strong>${f.title}</strong>
+              <span>${f.text}</span>
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+  }
+
+  function goTo(idx, fromAuto) {
+    if (idx === current) return;
+
+    // exit current
+    const cur = document.getElementById('screen-' + current);
+    cur.classList.remove('active');
+    cur.classList.add('exit');
+    setTimeout(() => cur.classList.remove('exit'), 500);
+
+    // update dots
+    dots[current].classList.remove('active');
+
+    current = idx;
+
+    // enter new
+    const next = document.getElementById('screen-' + current);
+    next.classList.add('active');
+    dots[current].classList.add('active');
+
+    renderSide(current);
+
+    // restart auto if manual
+    if (!fromAuto) restartAuto();
+  }
+
+  function nextScreen() {
+    const next = (current + 1) % screens.length;
+    goTo(next, true);
+  }
+
+  function restartAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(nextScreen, 4000);
+  }
+
+  document.getElementById('btn-next').addEventListener('click', () => {
+    goTo((current + 1) % screens.length);
+  });
+  document.getElementById('btn-prev').addEventListener('click', () => {
+    goTo((current - 1 + screens.length) % screens.length);
+  });
+
+  // init
+  renderSide(0);
+  restartAuto();
+</script>
+</body>
+</html>
